@@ -1,0 +1,40 @@
+{
+  "ids": {
+    "User": 1,
+    "AccessToken": 2,
+    "ACL": 1,
+    "RoleMapping": 6,
+    "Role": 4,
+    "user": 6,
+    "Project": 1,
+    "Follow": 1
+  },
+  "models": {
+    "User": {},
+    "AccessToken": {
+      "75rshMabNE5zoCTCnAeo8kCJr7uCkH7C5ZmBeG6TEpC8eA0XtLrxZBPIBZZkGXWr": "{\"id\":\"75rshMabNE5zoCTCnAeo8kCJr7uCkH7C5ZmBeG6TEpC8eA0XtLrxZBPIBZZkGXWr\",\"ttl\":1209600,\"created\":\"2017-01-19T20:16:34.336Z\",\"userId\":1}"
+    },
+    "ACL": {},
+    "RoleMapping": {
+      "1": "{\"principalType\":\"USER\",\"principalId\":\"1\",\"roleId\":1,\"id\":1}",
+      "2": "{\"principalType\":\"USER\",\"principalId\":\"2\",\"roleId\":2,\"id\":2}",
+      "3": "{\"principalType\":\"USER\",\"principalId\":\"3\",\"roleId\":2,\"id\":3}",
+      "4": "{\"principalType\":\"USER\",\"principalId\":\"4\",\"roleId\":3,\"id\":4}",
+      "5": "{\"principalType\":\"USER\",\"principalId\":\"5\",\"roleId\":3,\"id\":5}"
+    },
+    "Role": {
+      "1": "{\"name\":\"admin\",\"description\":\"Administrator\",\"created\":{},\"modified\":{},\"id\":1}",
+      "2": "{\"name\":\"developer\",\"description\":\"Developer\",\"created\":{},\"modified\":{},\"id\":2}",
+      "3": "{\"name\":\"nonprofit\",\"description\":\"Nonprofit\",\"created\":{},\"modified\":{},\"id\":3}"
+    },
+    "user": {
+      "1": "{\"name\":\"Communicode Administrator\",\"info\":{},\"username\":\"admin\",\"password\":\"$2a$10$SIXY2ZKosHis7aDv4IQDLOKEICqxGRMT.LPg014lzeB2w6VC2dsVa\",\"email\":\"admin@communicode.co\",\"id\":1}",
+      "2": "{\"name\":\"Test User 1\",\"info\":{},\"username\":\"test1\",\"password\":\"$2a$10$UVP8WyqfIGq7QX.s3F0Axe6qvDFHB0B4GmUlzETqPngJeaCsIsxP.\",\"email\":\"test1@communicode.co\",\"id\":2}",
+      "3": "{\"name\":\"Test User 2\",\"info\":{},\"username\":\"test2\",\"password\":\"$2a$10$/PGPG0j5fsP2oUt/Cr2lIO4DrDzt.T5ffLXP.IsafGFrQWrIvUE6C\",\"email\":\"test2@communicode.co\",\"id\":3}",
+      "4": "{\"name\":\"Test Nonprofit 1\",\"info\":{},\"username\":\"nonprofit1\",\"password\":\"$2a$10$3Jt4iYodEsg/.q0N8nGXDeTStQAfpnLyIJkwthaDTSmGmhZLCOFza\",\"email\":\"nonprofit1@communicode.co\",\"id\":4}",
+      "5": "{\"name\":\"Test Nonprofit 2\",\"info\":{},\"username\":\"nonprofit2\",\"password\":\"$2a$10$a8o1.k2T5iQXDNrkzVuMv.21MSqc9Xa3bDjhm68bsV92LHaHzbro2\",\"email\":\"nonprofit2@communicode.co\",\"id\":5}"
+    },
+    "Project": {},
+    "Follow": {}
+  }
+}

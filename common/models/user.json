@@ -1,0 +1,75 @@
+{
+  "name": "user",
+  "plural": "users",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "info": {
+      "type": "object",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "projects": {
+      "type": "hasMany",
+      "model": "Project",
+      "foreignKey": "ownerId"
+    },
+    "notifications": {
+      "type": "hasMany",
+      "model": "Notification",
+      "foreignKey": "userId"
+    },
+    "followers": {
+      "type": "hasMany",
+      "model": "Follow",
+      "foreignKey": "userId"
+    },
+    "following": {
+      "type": "hasMany",
+      "model": "Follow",
+      "foreignKey": "followerId"
+    },
+    "developerMatches": {
+      "type": "hasMany",
+      "model": "Match",
+      "foreignKey": "developerId",
+      "required": false
+    },
+    "nonprofitMatches": {
+      "type": "hasMany",
+      "model": "Match",
+      "foreignKey": "nonprofitId",
+      "required": false
+    }
+  },
+  "acls": [
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}
