@@ -6,27 +6,28 @@ module.exports = function (User) {
   User.prototype.follow = function (userId, cb) {
     //'this' is the user to follow
     //logged in user is the one who's following
-    var result = {status: 'success'};
     var follower = this;
+    var error;
     User.findById(userId, function (err, userToFollow) {
       if (err) {
-        result.status = 'fail';
-        result.reason = 'Could not find user ' + userId;
-        cb(null, result);
+        cb(err);
+      }
+      else if (!userToFollow) {
+        error = new Error('Could not find user ' + userId);
+        error.status = 404;
+        cb(error);
         return;
       }
       else if (follower.id == userToFollow.id) {
-        result.status = 'fail';
-        result.reason = 'User cannot follow him or herself!';
-        cb(null, result);
+        error = new Error('User cannot follow him or herself!');
+        error.status = 406;
+        cb(error);
         return;
       }
       var Follow = app.models.Follow;
       Follow.findOne({where: {userId: userToFollow.id, followerId: follower.id}}, function (err, fllw) {
         if (fllw) {
-          result.status = 'fail';
-          result.reason = 'User is already following other user';
-          cb(null, result);
+          cb(null, fllw);
           return;
         }
         var newFollow = {
@@ -36,13 +37,10 @@ module.exports = function (User) {
         };
         Follow.create(newFollow, function (err, instance) {
           if (err) {
-            result.status = 'fail';
-            result.reason = 'Could not create the follow';
+            cb(err);
+            return;
           }
-          else {
-            result.data = instance;
-          }
-          cb(null, result);
+          cb(null, instance);
         });
 
       });
@@ -60,28 +58,30 @@ module.exports = function (User) {
   });
 
   User.prototype.unfollow = function (userId, cb) {
-    var result = {status: 'success'};
     var unfollower = this;
+    var error;
     User.findById(userId, function (err, userToUnfollow) {
-      if (err || !userToUnfollow) {
-        result.status = 'fail';
-        result.reason = 'Could not find user ' + userId;
-        cb(null, result);
+      if (err) {
+        cb(err);
+      }
+      else if (!userToUnfollow) {
+        error = new Error('Could not find user ' + userId);
+        error.status = 404;
+        cb(error);
         return;
       }
       else if (unfollower.id == userToUnfollow.id) {
-        result.status = 'fail';
-        result.reason = 'User cannot unfollow him or herself!';
-        cb(null, result);
+        error = new Error('User cannot unfollow him or herself!');
+        error.status = 406;
+        cb(error);
         return;
       }
       var Follow = app.models.Follow;
-      Follow.destroyAll({userId: userToUnfollow.id, followerId: unfollower.id}, function (err /*, info*/) {
+      Follow.destroyAll({userId: userToUnfollow.id, followerId: unfollower.id}, function (err/*, info*/) {
         if (err) {
-          result.status = 'fail';
-          result.reason = 'Could not destroy the follow';
+          cb(err);
         }
-        cb(null, result);
+        cb(null, {});
       });
     });
   };
