@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
-    "posttest": "npm run lint && nsp check"
+    "posttest": "npm run lint && nsp check",
+    "test": "mocha"
   },
   "dependencies": {
     "compression": "^1.0.3",
@@ -15,12 +16,15 @@
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^4.0.0",
     "serve-favicon": "^2.0.1",
-    "strong-error-handler": "^1.0.1"
+    "strong-error-handler": "^1.0.1",
+    "http-status": "latest"
   },
   "devDependencies": {
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
-    "nsp": "^2.1.0"
+    "mute": "^2.0.6",
+    "nsp": "^2.1.0",
+    "supertest": "latest"
   },
   "repository": {
     "type": "",

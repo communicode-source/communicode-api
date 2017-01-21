@@ -1,6 +1,7 @@
 'use strict';
 
 var app = require('../../server/server');
+var status = require('http-status');
 
 module.exports = function (User) {
   User.prototype.follow = function (userId, cb) {
@@ -14,13 +15,13 @@ module.exports = function (User) {
       }
       else if (!userToFollow) {
         error = new Error('Could not find user ' + userId);
-        error.status = 404;
+        error.status = status.NOT_FOUND;
         cb(error);
         return;
       }
       else if (follower.id == userToFollow.id) {
         error = new Error('User cannot follow him or herself!');
-        error.status = 406;
+        error.status = status.NOT_ACCEPTABLE;
         cb(error);
         return;
       }
@@ -66,13 +67,13 @@ module.exports = function (User) {
       }
       else if (!userToUnfollow) {
         error = new Error('Could not find user ' + userId);
-        error.status = 404;
+        error.status = status.NOT_FOUND;
         cb(error);
         return;
       }
       else if (unfollower.id == userToUnfollow.id) {
         error = new Error('User cannot unfollow him or herself!');
-        error.status = 406;
+        error.status = status.NOT_ACCEPTABLE;
         cb(error);
         return;
       }
