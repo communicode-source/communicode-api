@@ -10,7 +10,7 @@ var Greeting = require('../../models/Greetings');
 
 // This is somewhat odd looking syntax, but this is essentially making routes for the greeting api.
 greetings.route('/')
-  // Fir GET HTTP request type.
+  // For GET HTTP request type.
   .get((req, res) => {
     Greeting.find({}, function(err, greetings) {
       res.status(200).json(greetings);

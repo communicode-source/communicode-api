@@ -1,12 +1,27 @@
 {
-    "name": "communicode-api",
-    "repository": "https://github.com/Communicode-Source/CommunicodeAPI",
-    "description": "The Backend API for Communicode",
-    "main": "server.js",
-    "dependencies": {
-        "express": "~4.0.0",
-        "mongoose": "~3.6.13",
-        "body-parser": "~1.0.1",
-        "morgan": "*"
-    }
+  "name": "communicode-api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Communicode-Source/CommunicodeAPI.git"
+  },
+  "description": "The Backend API for Communicode",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "express": "~4.0.0",
+    "jwt-simple": "^0.5.1",
+    "mongoose": "~3.6.13",
+    "morgan": "*"
+  },
+  "scripts": {
+    "start": "sudo service mongod start",
+    "stop": "sudo service mongod stop"
+  },
+  "bugs": {
+    "url": "https://github.com/Communicode-Source/CommunicodeAPI/issues"
+  },
+  "homepage": "https://github.com/Communicode-Source/CommunicodeAPI#readme",
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC"
 }
