@@ -34,6 +34,16 @@ app.use(express.static(path.join(__dirname, 'web')));
 // Token authentication required for all /secure api endpoints.
 app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
 
+app.all('/*', function(req, res, next){
+  // Allows cross site scripting.
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
+  // Set Custom Headers
+  res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+
+  next();
+})
+
 // Routing stuff.
 
 // Load our routes here.
