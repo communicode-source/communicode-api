@@ -2,5 +2,4 @@
 /app/routes/test
 /app/config/auth.json
 package.json
-.gitignore
 post.txt
