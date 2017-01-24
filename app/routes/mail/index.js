@@ -23,36 +23,45 @@ var fs = require('fs');
 // Route to send emails.
 mail.route('/')
   .get((req, res, next) => { // Should not use GET for emailing.
-    res.status(200).json({'err': 'Cannot send an email via GET, must use POST'});
-
+    res.status(200).json({err: "Cannot send an email via GET, must use POST"});
     })
   .post((req, res) => { // This is the route to use for emailing a single individual.
     fs.readFile(__dirname+'/../../../mailTemplates/views/'+req.body.html+'.html', 'utf8', function(err, html){
-      // Making sure the templating file actually exists before doing anything.
+      // Making sure the templating file actually exists before doing anything else.
       if(err) {
-        res.status(200).json({"err": true, "msg": "invalid template"}); // Return an error if the templating HTML doc is not found.
+        res.status(200).json({err: true, msg: "Invalid template"}); // Return an error if the templating HTML doc is not found.
       } else {
-        // Standard emailing things.
-        var mailOptions = {
-          from: '"Communicode ?" <communicode@outlook.com>', // Obvious who this comes from.
-          subject: req.body.subject, // Subject of the email.
-          html: html // The html template.
-        };
-
-        // Tells NodeMailer that we are using a template.
-        var temp = Mailer.templateSender(mailOptions);
-
-        // Until I work out some kinks.
+        // Loops through designated data to replace it with passed in data.
         var data = require('./../../../mailTemplates/data/'+req.body.html);
-        for(var key in data){
-          data[key] = req.body[key];
+        // Error stuff.
+        var tempData = true;
+        for(var key in data.mutable){
+          data.mutable[key] = (req.body[key]) ? req.body[key] : data.mutable[key]; // Beautiful ternary that allows for default template data.
+          if(data.mutable[key] == null || data.mutable[key] == undefined){
+            console.log("Key: %s, was not defined...", key); //For debugging purposes
+            tempData = false; // There is an error.
+          }
         }
 
-        // Sends the email with the given information, returns either the error or the details.
-        temp({to: req.body.target}, data, function(err, info){
-          //var error = (err == null) ? false : err
-          res.status(200).json({'err': (err == null) ? false : err, 'details': info});
-        });
+        // Checks if there is an error with the template data to be parsed.
+        if(!tempData){
+          res.status(200).json({err: true, msg: "Not all data values were passed through."});
+        } else {
+          // Standard emailing things.
+          var mailOptions = {
+            from: '"Communicode ?" <communicode@outlook.com>', // Obvious who this comes from.
+            subject: data.static.subject, // Subject of the email.
+            html: html // The html template.
+          };
+          // Tells NodeMailer that we are using a template.
+          var temp = Mailer.templateSender(mailOptions);
+          // Sends the email with the given information, returns either the error or the details.
+          temp({to: req.body.target}, data.mutable, function(err, info){
+            //var error = (err == null) ? false : err
+            res.status(200).json({err: (err == null) ? false : err, details: info});
+          });
+        }
+
       }
 
     });
