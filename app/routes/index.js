@@ -9,7 +9,7 @@ routes.use('/api/greeting', greetings);
 routes.get('/', (req, res) => {
   res.status(200).renderFile('index.html');
 });
-
+// OH MY GOD A COMMENT
 // More routing.
 routes.get('/api', (req, res) => {
   res.status(200).json({ message: 'Connection Made!' });
