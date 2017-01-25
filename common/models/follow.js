@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = function (Follow) {
+module.exports = function(Follow) {
 
 };

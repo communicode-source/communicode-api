@@ -6,7 +6,7 @@ module.exports = function enableAuthentication(server) {
 
   var loopback = require('loopback');
   server.middleware('auth', loopback.token({
-    model: server.models.accessToken,
+    model:              server.models.accessToken,
     currentUserLiteral: 'self'
   }));
 };

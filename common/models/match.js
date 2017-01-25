@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = function (Match) {
+module.exports = function(Match) {
 
 };
