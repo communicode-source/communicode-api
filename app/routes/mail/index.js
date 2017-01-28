@@ -37,7 +37,7 @@ mail.route('/')
         var tempData = true;
         for(var key in data.mutable){
           data.mutable[key] = (req.body[key]) ? req.body[key] : data.mutable[key]; // Beautiful ternary that allows for default template data.
-          if(data.mutable[key] == null || data.mutable[key] == undefined){
+          if(data.mutable[key] == null){
             console.log("Key: %s, was not defined...", key); //For debugging purposes
             tempData = false; // There is an error.
           }

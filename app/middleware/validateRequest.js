@@ -11,10 +11,10 @@ module.exports = function(req, res, next){
     try {
       // This is how the token is checked.
       var decode = jwt.decode(token, require('./../config/auth.json').token);
-      console.log(decode.exp);
+
       // Checks the date and returns an error if it has expired.
       if(decode.exp <= Date.now()) {
-        res.status(400).json({"err": true, "msg": "Expired token."});
+        res.status(400).json({err: true, msg: "Expired token."});
         return;
       }
 
@@ -22,15 +22,15 @@ module.exports = function(req, res, next){
       user = key == "Name" ? true : false; // Needs to check that decode.iss == user here also.
       // If user is false then return error.
       if( !user ) {
-        res.status(401).json({"err": true, "msg": "Invalid user"});
+        res.status(401).json({err: true, msg: "Invalid user"});
       } else { // If it gets here then it passed validation.
         next(); // This is if the validation is successful, the user and token should match.
       }
     } catch(err) { //Only if JWT decides not to work or something.
-      res.status(401).json({"err": true, "msg": err});
+      res.status(401).json({err: true, msg: "Invalid token."});
     }
   } else { // Failed... Just failed.
-    res.status(401).json({"err": true, "msg": "No token detected or invalid token"});
+    res.status(401).json({err: true, msg: "Check token and key"});
     return;
   }
 };

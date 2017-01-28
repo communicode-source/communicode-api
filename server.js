@@ -11,6 +11,7 @@ var logger     = require('morgan');
 // Mongo database schema... Because we need a schema for our schemaless database service...
 var mongoose   = require('mongoose');
 
+var passport = require('passport');
 // DB Stuff.
 
 const database = require('./app/config/database.js');
@@ -34,13 +35,18 @@ app.use(express.static(path.join(__dirname, 'web')));
 // Token authentication required for all /secure api endpoints.
 app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
 
+// Session stuff
+app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.all('/*', function(req, res, next){
   // Allows cross site scripting.
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
   // Set Custom Headers
   res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
-
   next();
 })
 
