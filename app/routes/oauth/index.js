@@ -24,7 +24,7 @@ oAuth.route('/github/login/callback')
 // General routes.
 oAuth.route('/profile')
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
-    res.send(req.user.email);
+    res.send(req.user.email+"<br/><a href='http://localhost:3000/oauth/logout'>Logout</a>");
   });
 oAuth.route('/logout')
   .get((req, res) => {

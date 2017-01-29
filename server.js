@@ -39,6 +39,8 @@ app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
 app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
+// Configuration for passport.
+require('./app/config/passportConfig')(passport);
 
 
 app.all('/*', function(req, res, next){

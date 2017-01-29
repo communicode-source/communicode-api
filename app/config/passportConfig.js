@@ -1,7 +1,7 @@
-var FacebookStrategy = require('passport-facebook').Strategy;
-var GithubStrategy   = require('passport-github').Strategy;
-var User             = require('./../models/User');
-var auth             = require('./auth.json');
+var FacebookStrategy = require('passport-facebook').Strategy; // Allows for Facebook validation.
+var GithubStrategy   = require('passport-github').Strategy; // Allowws for Github validation.
+var User             = require('./../models/User'); // User model.
+var auth             = require('./auth.json'); // Super secret sauces.
 
 // Repeated function for finding the user in the database.
 var findOrCreateUser = function(profile, done) {
@@ -45,7 +45,7 @@ module.exports = function(passport) {
 
     // Used to serialize the user for the session.
     passport.serializeUser(function(user, done) {
-        done(null, user); // This is the detail that will be logged into the session.
+        done(null, user); // This what will be logged into the session.
     });
 
     // Used to deserialize the user.
@@ -58,7 +58,7 @@ module.exports = function(passport) {
     // =========================================================================
     passport.use(new FacebookStrategy({ // Using the facebook passport startegy to lgo people in.
         passReqToCallBack: true, // Necessary to move out that annoying function.
-        clientID        : auth.facebook.clientID, // Kittens
+        clientID        : auth.facebook.clientID, // Kittens.
         clientSecret    : auth.facebook.clientSecret, // Secret sauce.
         callbackURL     : 'http://localhost:3000/oauth/facebook/login/callback', // URls
         profileFields   : ['id', 'emails', 'name'] // Permissions.
@@ -73,8 +73,8 @@ module.exports = function(passport) {
     // GITHUB ==================================================================
     // =========================================================================
     passport.use(new GithubStrategy({
-      passReqToCallBack: true,
-      clientID        : auth.github.clientID, // Kittens
+      passReqToCallBack: true, // This should just be default TBH... Ask if I'm salty about it.
+      clientID        : auth.github.clientID, // Meerkat.
       clientSecret    : auth.github.clientSecret, // Secret sauce.
       profileFields   : ['id', 'emails', 'name'] // Permissions.
       },
