@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'web')));
 // Token authentication required for all /secure api endpoints.
 app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
 
+app.set('json spaces', 5); // Now we can read the freaking json outputs. YEAH.
 // Session stuff
 app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());

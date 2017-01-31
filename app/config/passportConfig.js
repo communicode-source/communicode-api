@@ -1,12 +1,13 @@
 const FacebookStrategy  = require('passport-facebook').Strategy; // Allows for Facebook validation.
 const GithubStrategy    = require('passport-github').Strategy; // Allowws for Github validation.
-const LocalStrategy     = require('passport-local').Strategy;
-var User                = require('./../models/User'); // User model.
+const LocalStrategy     = require('passport-local').Strategy; // Allows for custom local validation.
 const auth              = require('./auth.json'); // Super secret sauces.
+var User                = require('./../models/User'); // User model.
+
 
 
 // Repeated function for finding the user in the database.
-var findOrCreateUser = function(profile, done) {
+const findOrCreateUser = function(profile, done) {
   User.findOne({ // Sees if user is already in DB.
     'Provider'         : profile.provider,
     'providerID'       : profile.id,
@@ -38,9 +39,48 @@ var findOrCreateUser = function(profile, done) {
         return done(null, newUser);
       })
     }
-  }
-);
-};
+  });
+}
+// Function to create a user in the local database.
+const createLocalUser = function(req, email, password, done) {
+  User.findOne({'email': email}, function(err, user) {
+    if(err)
+      return done(err);
+    if(user) {
+      return done(null, false);
+    } else {
+      var newUser = new User(); // Create a new user schema.
+      newUser.Provider = 'local'; // Weird syntax for declaring the fields of the user.
+      newUser.email = email;
+      newUser.accountType = false;
+      newUser.fName = req.body.fname ? req.body.fname : null;
+      newUser.lName = req.body.lname ? req.body.lname : null;
+      newUser.password = newUser.generateHash(password); // This is why the weird syntax seems necessary.
+
+      newUser.save(function(err){ // Save the user.
+        if(err)
+          throw err;
+        return done(null, newUser);
+      });
+    }
+  });
+}
+// Function to log in the current user in the lcoal database.
+const logInCurrentUser = function(email, password, done) {
+  User.findOne({'email': email}, function(err, user) { // Finding the user.
+    if(err)
+      throw new err;
+    if(!user){ // Makes sure the user exists.
+      return done(null, false);
+    }
+    if(user.Provider != 'local') // Make sure the email comes from a local user.
+      return done(null, false);
+    if(!user.validPassword(password)) // Validate password.
+      return done(null, false);
+
+    return done(null, user); // Return the user.
+  });
+}
 
 // Initialize with the passport instance to configure passport to run properly.
 module.exports = function(passport) {
@@ -52,7 +92,7 @@ module.exports = function(passport) {
 
     // Used to deserialize the user.
     passport.deserializeUser(function(user, done) {
-        done(null, user);
+        done(null, user); // This is what will be unlogged.
     });
 
     // =========================================================================
@@ -90,31 +130,21 @@ module.exports = function(passport) {
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
       usernameField: 'email', // Changes the default from 'username' to 'email.'
-      passReqToCallback : true // THIS IS THE DUMBEST THING EVER. SINCE WHEN DID HAVING A SPACE AFTER THE KEY TO A JSON OBJECT ACTUALLY AFFECT THE GOSH DANG VALUE.
+      /**
+      *
+      * THIS IS THE DUMBEST THING EVER. SINCE WHEN DID HAVING A SPACE AFTER THE KEY
+      *      TO A JSON OBJECT ACTUALLY AFFECT THE GOSH DANG VALUE. JAVASCRIPT IS NOT
+      *      A FLIPPING WHITE SPACE LANGUAGE. THIS SHOULD NOT BE A PROBLEM. WHY DO
+      *      OTHER THINGS WORK FINE WITHOUT THE SPACE? HOW DO YOU EVEN ACCOMPLISH
+      *      MAKING SUCH A THING ILLEGAL WHEN IT REALLY ISN'T?!?!?! CRAP.
+      *             -- Cooper
+      *
+      **/
+      passReqToCallback : true // AWFUL. RUN. AS FAR AWAY AS YOU CAN. 0/10. NEVER RECOMMEND.
     },
       function(req, email, password, done){
         process.nextTick(function() { // Async.
-          User.findOne({'email': email}, function(err, user) {
-            if(err)
-              return done(err);
-            if(user) {
-              return done(null, false);
-            } else {
-              var newUser = new User(); // Create a new user schema.
-              newUser.Provider = 'local'; // Weird syntax for declaring the fields of the user.
-              newUser.email = email;
-              newUser.accountType = false;
-              newUser.fname = (req.body.fname) ? req.body.fname : null;
-              newUser.lname = (req.body.lname) ? req.body.lname : null;
-              newUser.password = newUser.generateHash(password); // This is why the weird syntax seems necessary.
-
-              newUser.save(function(err){ // Save the user.
-                if(err)
-                  throw err;
-                return done(null, newUser);
-              });
-            }
-          });
+          createLocalUser(req, email, password, done); // That one function.
         });
       }
     ));
@@ -126,18 +156,7 @@ module.exports = function(passport) {
     },
     function(email, password, done) {
       process.nextTick(function() { // Async.
-        User.findOne({'email': email}, function(err, user) { // Finding the user.
-          if(err)
-            throw new err;
-          if(!user){ // Makes sure the user exists.
-            return done(null, false);
-          }
-          if(user.Provider != 'local') // Make sure the email comes from a local user.
-            return done(null, false);
-          if(!user.validPassword(password)) // Validate password.
-            return done(null, false);
-
-          return done(null, user); // Return the user.
-        })});
+        logInCurrentUser(email, password, done); // That one function.
+      });
     }));
 };

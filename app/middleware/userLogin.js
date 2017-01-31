@@ -1,5 +1,4 @@
 var User = require('./../models/User.js');
-var passHash = require('password-hash-and-salt');
 
 var userFunctions = {
   isLoggedIn: function(req, res, next) {
@@ -10,6 +9,14 @@ var userFunctions = {
 
     // If they aren't redirect them to the home page
     res.redirect('/');
+  },
+  mergeUsers: function(oldUser, newUser, fields) {
+    if(oldUser.Provider != 'local')
+      return false;
+    for(var key in fields){
+      newUser[key] = (oldUser[key]) ? oldUser[key] : (newUser[key]) ? newUser[key] : null;
+    }
+    return newUser;
   }
 }
 

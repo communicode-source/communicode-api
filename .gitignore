@@ -1,5 +1,4 @@
 /node_modules
-/app/routes/test
 /app/config/auth.json
 package.json
 post.txt

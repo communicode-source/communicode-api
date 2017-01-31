@@ -5,13 +5,14 @@ const test       = require('./test');
 const token      = require('./../middleware/genToken');
 const auth       = require('./../config/auth.json');
 const AuthRoutes = require('./oauth');
-
+const UserRoutes = require('./users');
 // Telling express what route goes to this greeting.
 routes.use('/api/greeting', greetings);
 // The mailing API route.
 routes.use('/api/secure/mail', mailDaemon);
 // Just a test route I created.
 routes.use('/api/secure/test', test);
+routes.use('/api/users', UserRoutes);
 // Login/Logout routes and temporary profile route.
 routes.use('/oauth', AuthRoutes);
 
