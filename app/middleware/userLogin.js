@@ -1,4 +1,5 @@
 var User = require('./../models/User.js');
+var passHash = require('password-hash-and-salt');
 
 var userFunctions = {
   isLoggedIn: function(req, res, next) {
@@ -9,7 +10,7 @@ var userFunctions = {
 
     // If they aren't redirect them to the home page
     res.redirect('/');
-  },
+  }
 }
 
 module.exports = userFunctions;

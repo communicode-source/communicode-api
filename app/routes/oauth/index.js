@@ -1,7 +1,7 @@
 var oAuth = require('express').Router();
 var passport = require('passport');
 
-// Faebook Routes.
+// Facebook Routes.
 oAuth.route('/facebook/login')
   .get(passport.authenticate('facebook', { scope : 'email' }));
 
@@ -16,6 +16,18 @@ oAuth.route('/github/login')
   .get(passport.authenticate('github', {scope: 'email'}));
 oAuth.route('/github/login/callback')
   .get(passport.authenticate('github', {
+    successRedirect: '/oauth/profile',
+    failureRedirect: '/'
+  }));
+
+// Local Auth routes.
+oAuth.route('/local/register')
+  .post(passport.authenticate('local-signup', {
+    successRedirect : '/oauth/profile',
+    failureRedirect : '/'
+  }));
+oAuth.route('/local/login')
+  .post(passport.authenticate('local-login', {
     successRedirect: '/oauth/profile',
     failureRedirect: '/'
   }));

@@ -1,7 +1,9 @@
-var FacebookStrategy = require('passport-facebook').Strategy; // Allows for Facebook validation.
-var GithubStrategy   = require('passport-github').Strategy; // Allowws for Github validation.
-var User             = require('./../models/User'); // User model.
-var auth             = require('./auth.json'); // Super secret sauces.
+const FacebookStrategy  = require('passport-facebook').Strategy; // Allows for Facebook validation.
+const GithubStrategy    = require('passport-github').Strategy; // Allowws for Github validation.
+const LocalStrategy     = require('passport-local').Strategy;
+var User                = require('./../models/User'); // User model.
+const auth              = require('./auth.json'); // Super secret sauces.
+
 
 // Repeated function for finding the user in the database.
 var findOrCreateUser = function(profile, done) {
@@ -57,7 +59,6 @@ module.exports = function(passport) {
     // FACEBOOK ================================================================
     // =========================================================================
     passport.use(new FacebookStrategy({ // Using the facebook passport startegy to lgo people in.
-        passReqToCallBack: true, // Necessary to move out that annoying function.
         clientID        : auth.facebook.clientID, // Kittens.
         clientSecret    : auth.facebook.clientSecret, // Secret sauce.
         callbackURL     : 'http://localhost:3000/oauth/facebook/login/callback', // URls
@@ -73,7 +74,6 @@ module.exports = function(passport) {
     // GITHUB ==================================================================
     // =========================================================================
     passport.use(new GithubStrategy({
-      passReqToCallBack: true, // This should just be default TBH... Ask if I'm salty about it.
       clientID        : auth.github.clientID, // Meerkat.
       clientSecret    : auth.github.clientSecret, // Secret sauce.
       profileFields   : ['id', 'emails', 'name'] // Permissions.
@@ -84,4 +84,60 @@ module.exports = function(passport) {
         });
       }
     ));
+
+    // =========================================================================
+    // LOCAL REGISTRATION ======================================================
+    // =========================================================================
+    passport.use('local-signup', new LocalStrategy({
+      usernameField: 'email', // Changes the default from 'username' to 'email.'
+      passReqToCallback : true // THIS IS THE DUMBEST THING EVER. SINCE WHEN DID HAVING A SPACE AFTER THE KEY TO A JSON OBJECT ACTUALLY AFFECT THE GOSH DANG VALUE.
+    },
+      function(req, email, password, done){
+        process.nextTick(function() { // Async.
+          User.findOne({'email': email}, function(err, user) {
+            if(err)
+              return done(err);
+            if(user) {
+              return done(null, false);
+            } else {
+              var newUser = new User(); // Create a new user schema.
+              newUser.Provider = 'local'; // Weird syntax for declaring the fields of the user.
+              newUser.email = email;
+              newUser.accountType = false;
+              newUser.fname = (req.body.fname) ? req.body.fname : null;
+              newUser.lname = (req.body.lname) ? req.body.lname : null;
+              newUser.password = newUser.generateHash(password); // This is why the weird syntax seems necessary.
+
+              newUser.save(function(err){ // Save the user.
+                if(err)
+                  throw err;
+                return done(null, newUser);
+              });
+            }
+          });
+        });
+      }
+    ));
+    // =========================================================================
+    // LOCAL LOGIN =============================================================
+    // =========================================================================
+    passport.use('local-login', new LocalStrategy({
+      usernameField: 'email', // Need to specify that the field we want is email, not username.
+    },
+    function(email, password, done) {
+      process.nextTick(function() { // Async.
+        User.findOne({'email': email}, function(err, user) { // Finding the user.
+          if(err)
+            throw new err;
+          if(!user){ // Makes sure the user exists.
+            return done(null, false);
+          }
+          if(user.Provider != 'local') // Make sure the email comes from a local user.
+            return done(null, false);
+          if(!user.validPassword(password)) // Validate password.
+            return done(null, false);
+
+          return done(null, user); // Return the user.
+        })});
+    }));
 };

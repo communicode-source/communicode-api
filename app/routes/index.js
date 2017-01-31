@@ -28,5 +28,6 @@ routes.get('/api', (req, res) => {
 // The actual generating of the token should be done when a user logs in or something.
 routes.get('/tokenMe', token.generate);
 
+
 // Exporting it.
 module.exports = routes;
