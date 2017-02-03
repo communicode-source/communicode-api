@@ -4,6 +4,29 @@
     <title>index</title>
   </head>
   <body>
-    A rad front end goes here.
+    A rad front end goes here. <br/>
+    <a href="/oauth/facebook/login">Use Facebook to login or signup</a> <br/>
+    <a href="/oauth/github/login">Use Github to login or signup</a><br/>
+    <a href="/api/users/all">All users</a><br/>
+    <a href="/oauth/profile">Profile</a><br/>
+
+    <h2>Local Login and Registration</h2>
+    <hr>
+    <b>Register</b>
+    <form class="" action="/oauth/local/register" method="post">
+      <input type="text" name="email" value="" placeholder="Email"></input>
+      <input type="password" name="password" value="" placeholder="Password"></input>
+      <input type="text" name="fname" value="" placeholder="First name"></input>
+      <input type="text" name="lname" value="" placeholder="Last name"></input>
+      <button type="submit" name="button">Submit</button>
+    </form>
+    <hr>
+    <b>Login</b>
+    <form class="" action="/oauth/local/login" method="post">
+      <input type="text" name="email" value="" placeholder="Email"></input>
+      <input type="password" name="password" value="" placeholder="Password"></input>
+      <button type="submit" name="button">Submit</button>
+    </form>
+    <hr>
   </body>
 </html>

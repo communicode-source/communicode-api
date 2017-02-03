@@ -1,0 +1,7 @@
+[
+{language: "French", greeting: "Bonjour"},{language: "Spanish",greeting: "Hola"},{language: "English",greeting: "Hello"},
+{language: "English", greeting: "Hi"},{language: "Swedish", greeting: "Hallå"},{language: "Arabic", greeting: "مرحبا"},
+{language: "Chinese", greeting: "你好"},{language: "Italian", greeting: "Ciao"},{language: "German", greeting: "Hallo"},
+{language: "German", greeting: "Guten Tag"},{language: "Portugese", greeting: "OLÀ"},{language: "Hindi", greeting: "Namaste"},
+{language: "Farsi", greeting: "Salaam"},{language: "Russian", greeting: "Здравствуйте"}
+]
