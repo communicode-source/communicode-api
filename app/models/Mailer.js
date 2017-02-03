@@ -2,7 +2,7 @@
 var nodemailer = require('nodemailer');
 
 // Get the super secret auth stuff.
-var secrets = require('./../config/auth.json').outlook;
+var secrets = require('./../../configuration/auth.json').outlook;
 // Settings for the configuration of the mailer
 var config = {
   host: secrets.host, // SMTP mail server.
