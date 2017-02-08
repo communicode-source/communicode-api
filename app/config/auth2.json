@@ -1,0 +1,39 @@
+{
+  "outlook": {
+    "host": "secrets",
+    "port": 587,
+    "secure": false,
+    "requireTLS": true,
+    "auth" : {
+      "user": "shhhhhhhhhhhhhhhhhhhh",
+      "pass": "coughcough"
+    }
+  },
+  "gmail": {
+    "host": null,
+    "port": null,
+    "secure": null,
+    "requireTLS": null,
+    "auth" : {
+      "user": null,
+      "pass": null
+    }
+  },
+  "token" : "spookyghost",
+  "github": {
+    "clientID": "mwahahahah",
+    "clientSecret": "oops"
+  },
+    "githubSecondary" : {
+      "clientID": "leopards",
+      "clientSecret" : "jaguar"
+    },
+  "facebook": {
+    "clientID": "otter",
+    "clientSecret": "snail"
+  },
+  "redis-options": {
+    "port": 6379,
+    "host": "127.0.0.1"
+  }
+}
