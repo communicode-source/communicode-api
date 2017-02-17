@@ -8,7 +8,12 @@ var userFunctions = {
         return next();
 
     // If they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/public');
+  },
+  ensureNotLogged: function(req, res, next) {
+    if(!req.isAuthenticated())
+      return next();
+    res.redirect('/oauth/profile');
   },
   mergeUsers: function(oldUser, newUser, fields) {
     if(oldUser.Provider != 'local')

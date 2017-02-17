@@ -12,23 +12,21 @@ routes.use('/api/greeting', greetings);
 routes.use('/api/secure/mail', mailDaemon);
 // Just a test route I created.
 routes.use('/api/secure/test', test);
+// View all users in the database.
 routes.use('/api/users', UserRoutes);
 // Login/Logout routes and temporary profile route.
 routes.use('/oauth', AuthRoutes);
-
-// res = response, req = request.
-// More routing, telling express what to send back.
-routes.get('/', (req, res) => {
-  res.status(200).renderFile('index.html');
-});
-
-// More routing.
-routes.get('/api', (req, res) => {
-  res.status(200).json({ message: 'Connection Made!' });
-});
 // The actual generating of the token should be done when a user logs in or something.
 routes.get('/tokenMe', token.generate);
 
 
+// res = response, req = request.
+// More routing, telling express what to send back.
+routes.get('/api', (req, res) => {
+  res.status(200).json({ message: 'Connection Made!' });
+});
+routes.get('/', (req, res)=> {
+  res.redirect('/public');
+});
 // Exporting it.
 module.exports = routes;

@@ -16,9 +16,8 @@
 const mail = require('express').Router();
 // Mail Daemon model.
 var Mailer = require('../../models/Mailer');
-
 // Used to get the HTML template (if there is a better way please let me know).
-var fs = require('fs');
+var fs     = require('fs');
 
 // Route to send emails.
 mail.route('/')

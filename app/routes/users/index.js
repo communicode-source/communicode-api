@@ -1,6 +1,5 @@
 const users = require('express').Router();
-
-var Users = require('./../../models/User');
+var Users   = require('./../../models/User');
 
 users.route('/all')
   .get((req, res) => {
@@ -9,7 +8,7 @@ users.route('/all')
     });
   });
 
-  
+
 users.route('/filter/:query')
   .get((req, res) => {
     Users.find({"Provider": req.params.query}, function(err, users) {

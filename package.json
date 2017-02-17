@@ -10,20 +10,22 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.0.1",
     "connect-ensure-login": "^0.1.1",
-    "express": "~4.0.0",
+    "express": "~4.8.0",
     "express-session": "^1.15.0",
     "jwt-simple": "^0.5.1",
-    "mongoose": "~3.6.13",
+    "mongoose": "~4.8.2",
     "morgan": "*",
     "nodemailer": "^3.0.2",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "redis": "^2.6.5"
   },
   "scripts": {
     "start": "sudo service mongod start",
-    "stop": "sudo service mongod stop"
+    "stop": "sudo service mongod stop",
+    "killRedif": " /etc/init.d/redis-server stop"
   },
   "bugs": {
     "url": "https://github.com/Communicode-Source/CommunicodeAPI/issues"

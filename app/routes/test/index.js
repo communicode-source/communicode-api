@@ -5,6 +5,6 @@ test.route('/')
     res.status(200).json({hi:"successful"});
   })
   .post((req,res, next) => {
-    res.status(200).send(req.body.fn);
+    res.status(200).json({hi: "successful"});
   });
 module.exports = test;

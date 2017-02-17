@@ -3,27 +3,28 @@ const GithubStrategy    = require('passport-github').Strategy; // Allowws for Gi
 const LocalStrategy     = require('passport-local').Strategy; // Allows for custom local validation.
 const auth              = require('./auth.json'); // Super secret sauces.
 var User                = require('./../models/User'); // User model.
-
-
+const newUserEmail      = require('./../middleware/email').newUserEmail;
+const token             = require('./../middleware/genToken').returnKeytoken;
 
 // Repeated function for finding the user in the database.
 const findOrCreateUser = function(profile, done) {
   User.findOne({ // Sees if user is already in DB.
     'Provider'         : profile.provider,
     'providerID'       : profile.id,
-    'email'            : profile._json.email
+    'email'            : profile.email
   }, function(err, user){
     if(err){ // Return if there is an error.
       console.log(err);
       return done(err, null);
     }
     if(user){ // Return an existing user if there is one.
+      console.log(user);
       return done(null, user);
     } else { // Make that new user.
       newUser = new User({
-        email: profile._json.email,
-        fName: profile._json.first_name,
-        lName: profile._json.last_name,
+        email: profile.email,
+        fName: profile.fname,
+        lName: profile.lname,
         providerID: profile.id,
         accountType: false,
         nonprofitType: null,
@@ -36,8 +37,9 @@ const findOrCreateUser = function(profile, done) {
         if(err){
           console.log(err);
         }
+        console.log(newUser);
         return done(null, newUser);
-      })
+      });
     }
   });
 }
@@ -106,7 +108,14 @@ module.exports = function(passport) {
     },
       function(token, refreshToken, profile, done){ // Annoying thing that took me forever to figure out how to use.
         process.nextTick(function(){ // Async function.
-          findOrCreateUser(profile, done); // That one function.
+          var user = {
+            "fname": profile._json.first_name,
+            "lname": profile._json.last_name,
+            "provider": "facebook",
+            "id": profile.id,
+            "email": profile._json.email
+          }
+          findOrCreateUser(user, done); // That one function.
           }
         );
       }));
@@ -120,7 +129,14 @@ module.exports = function(passport) {
       },
       function(token, refreshToken, profile, done) { // Annoying thing that took me forever to figure out how to use.
         process.nextTick(function(){ // Async function.
-          findOrCreateUser(profile, done); // That one function.
+          var user = {
+            "fname": profile._json.name.split(" ")[0],
+            "lname": profile._json.name.split(" ")[profile._json.name.split(" ").length - 1],
+            "provider": "github",
+            "id": profile.id,
+            "email": profile._json.email
+          }
+          findOrCreateUser(user, done); // That one function.
         });
       }
     ));
@@ -137,10 +153,15 @@ module.exports = function(passport) {
       *      A FLIPPING WHITE SPACE LANGUAGE. THIS SHOULD NOT BE A PROBLEM. WHY DO
       *      OTHER THINGS WORK FINE WITHOUT THE SPACE? HOW DO YOU EVEN ACCOMPLISH
       *      MAKING SUCH A THING ILLEGAL WHEN IT REALLY ISN'T?!?!?! CRAP.
-      *             -- Cooper
+      *             -- Cooper <(2/10/17)
       *
       **/
-      passReqToCallback : true // AWFUL. RUN. AS FAR AWAY AS YOU CAN. 0/10. NEVER RECOMMEND.
+      passReqToCallback: true // AWFUL. RUN. AS FAR AWAY AS YOU CAN. 0/10. NEVER RECOMMEND.
+      /**
+      * WHAT THE ****. NOW IT WORKS? TREVORE CRUPI CAN VOUCH IT WASN'T WORKING BEFORE.
+      *      THIS IS A LOAD OF CRAP. SCREW THIS. INCONSISTENCY REIGNS SUPREME IN JAVASCRIPT APPARENTLY.
+      *             -- Cooper (2/10/17)
+      **/
     },
       function(req, email, password, done){
         process.nextTick(function() { // Async.

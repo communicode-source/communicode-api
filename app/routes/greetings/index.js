@@ -12,6 +12,7 @@ var Greeting = require('../../models/Greetings');
 greetings.route('/')
   // For GET HTTP request type.
   .get((req, res) => {
+    console.log(req.user);
     Greeting.find({}, function(err, greetings) {
       res.status(200).json(greetings);
     });

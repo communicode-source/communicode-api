@@ -7,9 +7,11 @@ var genToken = {
   // For lazy developers who secure their api endpoints but then want an easy way to access them...
   generate: function(req, res) {
     // Validation here.
-    res.status(200).json({token: generateToken()});
+    res.status(200).json({token: generateToken(req)});
   },
-
+  returnKeytoken: function(email) {
+    return jwt.encode({iss: email}, require('./../config/auth.json'));
+  },
   userGenerate: function(req, res) {
     /**
     * Once the User object has been created then I will be good to go
@@ -18,13 +20,17 @@ var genToken = {
   }
 }
 // Makes the token.
-function generateToken() {
+function generateToken(req) {
   // Makes an expiration date (in days).
   var expiration = expiresIn(15);
   // Makes the actual token to be returned.
   // Note: iss should be either a username or user ID.
-  var token = jwt.encode({iss: 'User', exp: expiration}, require('./../config/auth.json').token);
+  if(!req.user)
+    return "Please log in first"
+
+  var token = jwt.encode({iss: req.user.email, exp: expiration}, require('./../config/auth.json').token);
   return token;
+
 }
 
 // Returns the Unix time in X number of minutes.

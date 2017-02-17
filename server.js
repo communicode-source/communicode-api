@@ -10,7 +10,9 @@ var bodyParser = require('body-parser');
 var logger     = require('morgan');
 // Mongo database schema... Because we need a schema for our schemaless database service...
 var mongoose   = require('mongoose');
-
+// Session Configuration
+var redis = require('./app/config/sessions')(app);
+// Login stuff.
 var passport = require('passport');
 // DB Stuff.
 
@@ -22,7 +24,6 @@ mongoose.connection.on('error', function() {
 });
 
 // Middleware stuff.
-
 // These tell Express what we are using for what.
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -30,18 +31,19 @@ app.use(bodyParser.json());
 app.set('port', process.env.PORT || 3000);
 // Telling the body parser we are using the URL for information.
 app.use(bodyParser.urlencoded({ extended: false }));
-// Serving static files via this path.
-app.use(express.static(path.join(__dirname, 'web')));
-// Token authentication required for all /secure api endpoints.
-app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
-
-app.set('json spaces', 5); // Now we can read the freaking json outputs. YEAH.
+app.set('json spaces', 3); // Now we can read the freaking json outputs. YEAH.
 // Session stuff
-app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
+// THIS MUST COME BEFORE ANYTHING SESSION-DEPENDENT HAPPENS. ==================================================
+//app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
+require('./app/config/sessions')(app);
 app.use(passport.initialize());
 app.use(passport.session());
-// Configuration for passport.
 require('./app/config/passportConfig')(passport);
+// PLEASE DON'T MOVE THIS =====================================================================================
+// Token authentication required for all /secure api endpoints.
+app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
+app.use('/public/register.html', [require('./app/middleware/userLogin').ensureNotLogged]);
+app.use('/public', express.static(path.join(__dirname, 'web')));
 
 
 app.all('/*', function(req, res, next){
@@ -51,7 +53,7 @@ app.all('/*', function(req, res, next){
   // Set Custom Headers
   res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
   next();
-})
+});
 
 // Routing stuff.
 

@@ -1,4 +1,4 @@
-var oAuth = require('express').Router(); // I really regret calling this oAuth... --Cooper
+var oAuth    = require('express').Router(); // I really regret calling this oAuth... --Cooper
 var passport = require('passport');
 
 //==============================================================================
