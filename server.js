@@ -6,6 +6,8 @@ var path       = require("path");
 var app        = express();
 // Helps with returning JSON in the correct fromat.
 var bodyParser = require('body-parser');
+
+var sanitize  = require('./app/middleware/secureForm');
 // Logging things.
 var logger     = require('morgan');
 // Mongo database schema... Because we need a schema for our schemaless database service...
@@ -25,12 +27,13 @@ mongoose.connection.on('error', function() {
 
 // Middleware stuff.
 // These tell Express what we are using for what.
-app.use(logger('dev'));
 app.use(bodyParser.json());
-// What port to start the HTTP(S) server.
-app.set('port', process.env.PORT || 3000);
 // Telling the body parser we are using the URL for information.
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(sanitize);
+app.use(logger('dev'));
+// What port to start the HTTP(S) server.
+app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 3); // Now we can read the freaking json outputs. YEAH.
 // Session stuff
 // THIS MUST COME BEFORE ANYTHING SESSION-DEPENDENT HAPPENS. ==================================================
@@ -42,9 +45,16 @@ require('./app/config/passportConfig')(passport);
 // PLEASE DON'T MOVE THIS =====================================================================================
 // Token authentication required for all /secure api endpoints.
 app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
-app.use('/public/register.html', [require('./app/middleware/userLogin').ensureNotLogged]);
-app.use('/public', express.static(path.join(__dirname, 'web')));
-
+app.use('/public/authenticate*', [require('./app/middleware/userLogin').ensureNotLogged]);
+app.use('/public', express.static(path.join(__dirname, 'web/html/public'), {
+  extensions: ['html']
+}));
+app.use('/css', express.static(path.join(__dirname, 'web/css'), {
+  extensions: ['css']
+}));
+app.use('/js', express.static(path.join(__dirname, 'web/js'), {
+  extensions: ['js']
+}));
 
 app.all('/*', function(req, res, next){
   // Allows cross site scripting.

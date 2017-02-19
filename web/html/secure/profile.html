@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <script src="/js/jquery"></script>
+  </head>
+  <body>
+    <p id="loading">Loading...</p>
+    <p class="error" id="error" style="display: none"></p>
+    <ul id="changes" style="display: none"></ul>
+    <button type="button" name="button" id="updateProfile" style="display: none;">Update Profile!</button>
+    <form id="submit" style="display: none">
+      <input type="text" name="fName" id="fname" value="" placeholder="First Name">
+      <input type="text" name="lName" id="lname" value="" placeholder="Last Name">
+      <input type="text" name="email" id="email" value="" placeholder="email">
+      <input type="text" name="interests" id="interests" placeholder="Add interest">
+      <button type="submit" name="button" id="submitUserData" style="">Submit!</button>
+    </form>
+    <div id="data">
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  $( document ).ready(function() {
+    $( "#loading" ).hide();
+    $("#updateProfile").show();
+    $("#updateProfile").click(function(){
+      $("#loading").show();
+      $("#changes").empty();
+      $("#error").hide();
+      $.get("/tokenme", function(token) {
+        $.get("/api/secure/users/update?token="+token.token, function( data ) {
+          $( "#loading" ).hide();
+          $( "#updateProfile" ).hide();
+          $( "#submit" ).show();
+          if(data.err == true) {
+            $( "#errmsg" ).show().html(data.msg);
+          } else {
+            $( "#errmsg" ).hide();
+            $( "#fname" ).val(decodeEntities(data.fname));
+            $( "#lname" ).val(decodeEntities(data.lname));
+            $( "#email" ).val(decodeEntities(data.email));
+          };
+        });
+      });
+    });
+
+    $( "#submit" ).submit(function(e) {
+      e.preventDefault();
+      $("#loading").show();
+      $("#submitUserData").attr("disabled", "disabled");
+      var data = {
+        'email': $( "#email" ).val(),
+        'fName': $( "#fname" ).val(),
+        'lName': $( "#lname" ).val(),
+        'interests': $( "#interests" ).val()
+      };
+      console.log(JSON.stringify(data));
+      $.get('/tokenme', function(token){
+        $.ajax({
+          url: "/api/secure/users/update?token="+token.token,
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          dataType: 'json',
+          type: "POST",
+          success: function( info ) {
+            if(info.err == true){
+              $( "#error" ).show().html(info.msg);
+            }
+            for(var key in info) {
+              if(key == 'err' || key == 'msg')
+                continue;
+              $( "#changes" ).show();
+              if(info[key] != false){
+                $( "#changes" ).append(
+                  $('<li>').attr("id", "success").append(
+                    key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email")+' changed to <u>'+info[key]+'</u>'
+                  )
+                )
+              } else {
+                $( "#changes" ).append(
+                    '<li>'+ key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email") + ' has not been changed</li>'
+                )
+              }
+            }
+            $("#submitUserData").removeAttr("disabled");
+            $( "#submit" ).hide();
+            $("#updateProfile").show();
+            $("#loading").hide();
+          }
+        });
+      })
+    });
+    function decodeEntities(encodedString) {
+      var textArea = document.createElement('textarea');
+      textArea.innerHTML = encodedString;
+      return textArea.value;
+    };
+  });
+</script>

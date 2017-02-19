@@ -57,6 +57,10 @@ const createLocalUser = function(req, email, password, done) {
       newUser.accountType = false;
       newUser.fName = req.body.fname ? req.body.fname : null;
       newUser.lName = req.body.lname ? req.body.lname : null;
+      newUser.skills = null;
+      newUser.interests = null;
+      newUser.nonprofitType = null;
+      newUser.providerID = null;
       newUser.password = newUser.generateHash(password); // This is why the weird syntax seems necessary.
 
       newUser.save(function(err){ // Save the user.

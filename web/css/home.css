@@ -1,0 +1,16 @@
+body {
+ font-family: monospace;
+}
+#smallNote {
+  font-size: 10px;
+  color: #FF0000;
+}
+#success {
+  color: #00FF90;
+}
+#error{
+  color: #FF0000;
+}
+ul {
+  list-style: none;
+}

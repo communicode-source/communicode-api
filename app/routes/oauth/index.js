@@ -1,6 +1,6 @@
 var oAuth    = require('express').Router(); // I really regret calling this oAuth... --Cooper
 var passport = require('passport');
-
+var path     = require('path');
 //==============================================================================
 // Facebook Routes. ============================================================
 //==============================================================================
@@ -41,7 +41,7 @@ oAuth.route('/local/login') // Login Route.
 //==============================================================================
 oAuth.route('/profile')
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
-    res.send(req.user.email+"<br/><a href='http://localhost:3000/oauth/logout'>Logout</a>");
+    res.status(200).sendFile(path.join(__dirname, '/../../../web/html/secure/profile.html'));
   });
 oAuth.route('/logout')
   .get((req, res) => {

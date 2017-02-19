@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login and Register</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+  </head>
+  <body>
+    <a href="/oauth/facebook/login">Use Facebook to login or signup</a> <br/>
+    <a href="/oauth/github/login">Use Github to login or signup</a><br/>
+    <a href="/api/users/all">All users</a><br/>
+    <a href="/oauth/profile">Profile</a><span id="smallNote">*</span><br/>
+    <a href="/tokenme">Get a token</a><span id="smallNote">*</span><br/>
+    <p id="smallNote">* Must be logged in</p>
+    <h2>Local Login and Registration</h2>
+    <hr>
+    <b>Register</b>
+    <form class="" action="/oauth/local/register" method="post">
+      <input type="text" name="email" value="" placeholder="Email"></input>
+      <input type="password" name="password" value="" placeholder="Password"></input>
+      <input type="text" name="fname" value="" placeholder="First name or Organization"></input>
+      <input type="text" name="lname" value="" placeholder="Last name"></input><span id="smallNote">*</span>
+      <button type="submit" name="button">Submit</button>
+    </form>
+    <p id="smallNote">* If you are a nonprofit, use the first name for the name of your organization and the last name blank</p>
+    <hr>
+    <b>Login</b>
+    <form class="" action="/oauth/local/login" method="post">
+      <input type="text" name="email" value="" placeholder="Email"></input>
+      <input type="password" name="password" value="" placeholder="Password"></input>
+      <button type="submit" name="button">Submit</button>
+    </form>
+    <hr>
+    <br/>
+    <a href="/public">Go back home</a>
+  </body>
+</html>

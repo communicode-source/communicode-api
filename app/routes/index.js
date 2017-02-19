@@ -13,7 +13,7 @@ routes.use('/api/secure/mail', mailDaemon);
 // Just a test route I created.
 routes.use('/api/secure/test', test);
 // View all users in the database.
-routes.use('/api/users', UserRoutes);
+routes.use('/api/secure/users', UserRoutes);
 // Login/Logout routes and temporary profile route.
 routes.use('/oauth', AuthRoutes);
 // The actual generating of the token should be done when a user logs in or something.
