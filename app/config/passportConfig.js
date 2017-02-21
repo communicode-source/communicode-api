@@ -1,5 +1,6 @@
 const FacebookStrategy  = require('passport-facebook').Strategy; // Allows for Facebook validation.
 const GithubStrategy    = require('passport-github').Strategy; // Allowws for Github validation.
+const GoogleStrategy    = require('passport-google-oauth2').Strategy;
 const LocalStrategy     = require('passport-local').Strategy; // Allows for custom local validation.
 const auth              = require('./auth.json'); // Super secret sauces.
 var User                = require('./../models/User'); // User model.
@@ -144,7 +145,28 @@ module.exports = function(passport) {
         });
       }
     ));
-
+    // =========================================================================
+    // Google REGISTRATION =====================================================
+    // =========================================================================
+    passport.use(new GoogleStrategy({
+      clientID      : auth.google.clientID,
+      clientSecret  : auth.google.clientSecret,
+      callbackURL     : 'http://localhost:3000/oauth/google/login/callback',
+      profileFields : ['id', 'emails', 'name']
+    },
+    function(token, refreshToken, profile, done) {
+      process.nextTick(function() {
+        console.log(profile);
+        var user = {
+          "fname": profile.displayName.split(" ")[0],
+          "lname": profile.displayName.split(" ")[profile.displayName.split(" ").length - 1],
+          "provider": "google",
+          "id": profile.id,
+          "email": profile.email
+        };
+        findOrCreateUser(user, done);
+      });
+    }));
     // =========================================================================
     // LOCAL REGISTRATION ======================================================
     // =========================================================================

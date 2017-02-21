@@ -23,6 +23,16 @@ oAuth.route('/github/login/callback')
     failureRedirect: '/'
   }));
 //==============================================================================
+// Google Auth Routes. =========================================================
+//==============================================================================
+oAuth.route('/google/login')
+  .get(passport.authenticate('google', {scope: 'email'}));
+oAuth.route('/google/login/callback')
+  .get(passport.authenticate('google', {
+    successRedirect: '/oauth/profile',
+    failureRedirect: '/'
+  }));
+//==============================================================================
 // Local Auth Routes. ==========================================================
 //==============================================================================
 oAuth.route('/local/register') // Register Route.
