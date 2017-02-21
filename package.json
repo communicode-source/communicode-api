@@ -26,7 +26,7 @@
   "scripts": {
     "start": "sudo service mongod start",
     "stop": "sudo service mongod stop",
-    "killRedif": " /etc/init.d/redis-server stop"
+    "killRedis": " /etc/init.d/redis-server stop"
   },
   "bugs": {
     "url": "https://github.com/Communicode-Source/CommunicodeAPI/issues"

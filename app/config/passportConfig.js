@@ -28,8 +28,8 @@ const findOrCreateUser = function(profile, done) {
         providerID: profile.id,
         accountType: false,
         nonprofitType: null,
-        interests: null,
-        skills: null,
+        interests: [],
+        skills: [],
         Provider: profile.provider,
         }
       );
@@ -57,8 +57,8 @@ const createLocalUser = function(req, email, password, done) {
       newUser.accountType = false;
       newUser.fName = req.body.fname ? req.body.fname : null;
       newUser.lName = req.body.lname ? req.body.lname : null;
-      newUser.skills = null;
-      newUser.interests = null;
+      newUser.skills = [];
+      newUser.interests = [];
       newUser.nonprofitType = null;
       newUser.providerID = null;
       newUser.password = newUser.generateHash(password); // This is why the weird syntax seems necessary.

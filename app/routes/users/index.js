@@ -11,7 +11,12 @@ users.route('/all')
 
 users.route('/filter/:query')
   .get((req, res) => {
-    Users.find({"Provider": req.params.query}, function(err, users) {
+    Users.find({"email": req.params.query}, function(err, users) {
+      for(var key in users) {
+        users[key].password = null;
+        users[key]._id = null;
+        users[key].providerID = null;
+      }
       if(err)
         res.status(200).json({err: true, msg: err});
       else
@@ -30,7 +35,7 @@ users.route('/update')
           "email" : (user.email) ? user.email : false,
           "interests":(user.interests) ? user.interests : false
         };
-        setTimeout((function() {res.status(200).json(userProfile);}), 5);
+        setTimeout((function() {res.status(200).json(userProfile);}), 0);
       });
   })
   .post((req, res) => {
@@ -38,7 +43,7 @@ users.route('/update')
       if(err)
         res.status(200).json({err: true, msg: 'Something went wrong, try again later'});
       var updateData = {msg: ""};
-      const blacklist = {"email": "Sorry, email could not be updated at this time. "};
+      const blacklist = {email: "Sorry, email could not be updated at this time. "};
       for(var key in req.body.sanatized){
         if(blacklist[key] && req.body[key] != user[key] && req.body[key] != "" && req.body[key] != false){
           updateData.msg += blacklist[key];
@@ -51,7 +56,7 @@ users.route('/update')
         }
         if(req.body[key] != user[key] && req.body[key] != "" && req.body[key] != false){
           updateData[key] = req.body.sanatized[key];
-          if(key == "interests"){
+          if(key == "interests" && user[key] != null){
             if(user[key].indexOf(req.body.sanatized[key]) != -1){
               updateData[key] = false;
             } else {
@@ -66,9 +71,23 @@ users.route('/update')
         }
       }
       user.save();
-      setTimeout((function() {res.status(200).json(updateData);}), 5);
+      setTimeout((function() {res.status(200).json(updateData);}), 0);
     });
 
   });
+users.route('/me')
+  .get((req, res) => {
+    Users.findOne({"email": req.user.email}, function(err, user) {
+      if(err){
+        res.status(200).json({err: true, msg: err});
+        return;
+      }
+      user.password = null;
+      user._id = null;
+      user.providerID = null;
+      res.status(200).json(user);
+    });
+  })
+
 
 module.exports = users;

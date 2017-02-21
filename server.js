@@ -55,6 +55,7 @@ app.use('/css', express.static(path.join(__dirname, 'web/css'), {
 app.use('/js', express.static(path.join(__dirname, 'web/js'), {
   extensions: ['js']
 }));
+app.use('/fonts', express.static(path.join(__dirname, 'web/fonts')));
 
 app.all('/*', function(req, res, next){
   // Allows cross site scripting.
