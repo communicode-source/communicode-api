@@ -1,4 +1,4 @@
-var jwt = require('jwt-simple');
+var jwt = require('jsonwebtoken');
 
 module.exports = function(req, res, next) {
 
@@ -13,7 +13,7 @@ module.exports = function(req, res, next) {
   if( token || key ) {
     try {
       // This is how the token is checked.
-      var decode = jwt.decode(token, require('./../config/auth.json').token);
+      var decode = jwt.verify(token, require('./../config/auth.json').token);
 
       // Checks the date and returns an error if it has expired.
       if(decode.exp <= Date.now()) {

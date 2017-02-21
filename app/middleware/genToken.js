@@ -1,5 +1,5 @@
 // JSON Web Tokens = awesome.
-var jwt = require('jwt-simple');
+var jwt = require('jsonwebtoken');
 //var User = require('./../models/User.js');
 
 
@@ -28,7 +28,7 @@ function generateToken(req) {
   if(!req.user)
     return "Please log in first"
 
-  var token = jwt.encode({iss: req.user.email, exp: expiration}, require('./../config/auth.json').token);
+  var token = jwt.sign({iss: req.user.email, exp: expiration}, require('./../config/auth.json').token);
   return token;
 
 }
