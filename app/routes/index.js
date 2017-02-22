@@ -26,7 +26,7 @@ routes.get('/api', (req, res) => {
   res.status(200).json({ message: 'Connection Made!' });
 });
 routes.get('/', (req, res)=> {
-  res.redirect('/public');
+  res.redirect('/');
 });
 // Exporting it.
 module.exports = routes;

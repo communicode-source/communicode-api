@@ -8,7 +8,7 @@ var userFunctions = {
         return next();
 
     // If they aren't redirect them to the home page
-    res.redirect('/public');
+    res.redirect('/');
   },
   ensureNotLogged: function(req, res, next) {
     if(!req.isAuthenticated())
