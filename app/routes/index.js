@@ -6,6 +6,8 @@ const token      = require('./../middleware/genToken');
 const auth       = require('./../config/auth.json');
 const AuthRoutes = require('./oauth');
 const UserRoutes = require('./users');
+const matches    = require('./matches');
+
 // Telling express what route goes to this greeting.
 routes.use('/api/greeting', greetings);
 // The mailing API route.
@@ -15,6 +17,8 @@ routes.use('/api/secure/test', test);
 routes.use('/api/users', UserRoutes);
 // Login/Logout routes and temporary profile route.
 routes.use('/oauth', AuthRoutes);
+//The matches API routes
+routes.use('./api/matches', matches);
 
 // res = response, req = request.
 // More routing, telling express what to send back.
