@@ -18,7 +18,7 @@ routes.use('/api/users', UserRoutes);
 // Login/Logout routes and temporary profile route.
 routes.use('/oauth', AuthRoutes);
 //The matches API routes
-routes.use('./api/matches', matches);
+routes.use('/api/matches', matches);
 
 // res = response, req = request.
 // More routing, telling express what to send back.
