@@ -1,4 +1,6 @@
-var matches = require('express').Router();
+const matches = require('express').Router();
+
+var Matches = require('./../../models/Matches');
 
 matches.route('/matches')
 
