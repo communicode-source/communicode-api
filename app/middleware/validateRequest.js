@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-
+const User = require('./../handlers/User');
 module.exports = function(req, res, next) {
 
   // Numerous ways of sending in the token.
@@ -21,7 +21,7 @@ module.exports = function(req, res, next) {
         return;
       }
       // More user authentication needs to happen here.
-      user = (key == decode.iss || decode.iss == req.user.email) ? true : false; // Needs to check that decode.iss == user here also.
+      user = (key == decode.iss || decode.iss == new User(req).getSessUser('email')) ? true : false; // Needs to check that decode.iss == user here also.
       // If user is false then return error.
       if(!user) {
         res.status(200).json({err: true, msg: "Invalid user"});

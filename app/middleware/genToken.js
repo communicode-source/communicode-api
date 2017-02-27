@@ -1,5 +1,7 @@
 // JSON Web Tokens = awesome.
 var jwt = require('jsonwebtoken');
+
+const userHandler = require('./../handlers/User');
 //var User = require('./../models/User.js');
 
 
@@ -21,14 +23,15 @@ var genToken = {
 }
 // Makes the token.
 function generateToken(req) {
+  const handler = new userHandler(req);
   // Makes an expiration date (in days).
   var expiration = expiresIn(15);
   // Makes the actual token to be returned.
   // Note: iss should be either a username or user ID.
-  if(!req.user)
+  if(!handler.isSignedIn())
     return "Please log in first"
 
-  var token = jwt.sign({iss: req.user.email, exp: expiration}, require('./../config/auth.json').token);
+  var token = jwt.sign({iss: handler.getSessUser('email'), exp: expiration}, require('./../config/auth.json').token);
   return token;
 
 }

@@ -1,17 +1,21 @@
 const users = require('express').Router();
-var Users   = require('./../../models/User');
+const User = require('./../../handlers/User');
 
 users.route('/all')
   .get((req, res) => {
-    Users.find({}, function(err, users) {
-      res.status(200).json(users);
-    });
+    // returnAll(call)
+    new User(req).returnAll(function(err, users) {
+      if(err)
+        res.status(200).json({err: true, msg: err});
+      else
+        res.status(200).json(users);
+    })
   });
 
 
 users.route('/filter/:query')
   .get((req, res) => {
-    Users.find({"email": req.params.query}, function(err, users) {
+    var callback = function(err, users) {
       for(var key in users) {
         users[key].password = null;
         users[key]._id = null;
@@ -21,27 +25,41 @@ users.route('/filter/:query')
         res.status(200).json({err: true, msg: err});
       else
         res.status(200).json(users);
-    });
+    };
+    new User().findUsers({"email": req.params.query}, callback);
   });
 
 users.route('/update')
   .get((req, res) => {
-      Users.findOne({'Provider': req.user.Provider, 'email': req.user.email}, function(err, user) {
-        if(err)
-          res.status(200).json({err: true, msg: 'Something went wrong'});
-        var userProfile = {
-          "fname" : (user.fName) ? user.fName : false,
-          "lname" : (user.lName) ? user.lName : false,
-          "email" : (user.email) ? user.email : false,
-          "interests":(user.interests) ? user.interests : false
-        };
-        setTimeout((function() {res.status(200).json(userProfile);}), 0);
-      });
+    const uVal = new User(req);
+    const callback =  function(err, users) {
+      if(err)
+        res.status(200).json({err: true, msg: 'Something went wrong'});
+      if(users.length > 1){
+        res.status(200).json({err: true, msg: 'Something went wrong'});
+        return;
+      }
+      user = users[0];
+      var userProfile = {
+        "fname" : (user.fName) ? user.fName : false,
+        "lname" : (user.lName) ? user.lName : false,
+        "email" : (user.email) ? user.email : false,
+        "interests":(user.interests) ? user.interests : false
+      };
+      setTimeout((function() {res.status(200).json(userProfile);}), 0);
+    };
+    uVal.findUsers({'Provider': uVal.getSessUser('Provider'), 'email': uVal.getSessUser('email')}, callback);
   })
   .post((req, res) => {
-    Users.findOne({'Provider': req.user.Provider, 'email': req.user.email}, function(err, user) {
+    const uVal = new User(req);
+    const callback = function(err, users) {
       if(err)
         res.status(200).json({err: true, msg: 'Something went wrong, try again later'});
+      if(users.length > 1){
+        res.status(200).json({err: true, msg: 'Something went wrong, try again laters'});
+        return;
+      }
+      var user = users[0];
       var updateData = {msg: ""};
       const blacklist = {email: "Sorry, email could not be updated at this time. "};
       for(var key in req.body.sanatized){
@@ -72,22 +90,40 @@ users.route('/update')
       }
       user.save();
       setTimeout((function() {res.status(200).json(updateData);}), 0);
-    });
-
+    };
+    uVal.findUsers({'Provider': uVal.getSessUser('Provider'), 'email': uVal.getSessUser('email')}, callback);
   });
 users.route('/me')
   .get((req, res) => {
-    Users.findOne({"email": req.user.email}, function(err, user) {
+    var t = new User(req);
+    t.findUsers({"email": t.getSessUser('email'), "Provider": t.getSessUser('Provider')}, function(err, users) {
       if(err){
         res.status(200).json({err: true, msg: err});
         return;
       }
+      if(users.length > 1){
+        res.status(200).json({err: true, msg: 'Too many users'});
+        return;
+      }
+      var user = users[0];
       user.password = null;
       user._id = null;
       user.providerID = null;
       res.status(200).json(user);
     });
   })
+  users.route('/fake')
+  .get((req, res) => {
+      var t = new User(req);
+      t.updateData(t.getSessUser('Provider'), t.getSessUser('email'), function(err, data){
+        if(err){
+          console.log("error %s", err);
+          res.send('There was an internal error, sorry');
+          return;
+        }
+        res.json(data);
+      });
+  });
 
 
 module.exports = users;
