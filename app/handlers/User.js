@@ -1,6 +1,7 @@
 'use strict'
 const getUser = require('./../models/User');
-
+const userAttr = require('./../models/UserAttributes');
+const mongoose = require('mongoose');
 class User {
   constructor(req) {
     this.isLoggedIn = (req) ? (req.isAuthenticated()) ? true : false : false;
@@ -10,6 +11,33 @@ class User {
   returnAll(call) {
     getUser.find({}, function(err, users){
       call(err, users)
+    });
+  }
+
+  getUrl(url, call) {
+    userAttr.find({"url": url}, function(err, users){
+      call(err, users);
+    });
+  }
+
+  getProfile(id, call) {
+    getUser.findOne({"_id": id}, function(err, user) {
+      var error = null;
+      if(err){
+        error = [err];
+      }
+      userAttr.findOne({"userId": user._id}, function(errTwo, attr){
+        if(errTwo){
+          error[1] = errTwo;
+        }
+        var profile = user;
+        profile.attr = [];
+        for(var key in attr) {
+          console.log(attr[key]);
+          profile.attr[key] = attr[key];
+        }
+        call({"user" : profile, "attributes": attr});
+      });
     });
   }
 
@@ -69,18 +97,12 @@ class User {
         return done(err, null);
       }
       if(user){ // Return an existing user if there is one.
-        console.log(user);
         return done(null, user);
       } else { // Make that new user.
-        newUser = new getUser({
+          var newUser = new getUser({
           email: profile.email,
-          fName: profile.fname,
-          lName: profile.lname,
           providerID: profile.id,
           accountType: false,
-          nonprofitType: null,
-          interests: [],
-          skills: [],
           Provider: profile.provider,
           }
         );
@@ -88,8 +110,26 @@ class User {
           if(err){
             console.log(err);
           }
-          console.log(newUser);
-          return done(null, newUser);
+        });
+        var reg = new RegExp(profile.fname.toLowerCase()+'.'+profile.lname.toLowerCase());
+        userAttr.find({url: {$regex: reg, $options: 'i'} }, function(err, res) {
+          console.log(res+"lsdkfjsdlkfj");
+          console.log(res.length);
+          var len = res.length+1;
+          console.log(len);
+          var hID = newUser._id;
+          var userA = new userAttr({
+            fName: profile.fname,
+            lName: profile.lname,
+            userId: hID,
+            url: profile.fname.toLowerCase()+'.'+profile.lname.toLowerCase()+len.toString()
+          });
+          userA.save(function(err) {
+            if(err){
+              console.log(err)
+            }
+            return done(null, newUser);
+          });
         });
       }
     });
@@ -102,21 +142,28 @@ class User {
       if(user) {
         return done(null, false);
       } else {
-        var newUser = new getUser(); // Create a new user schema.
-        newUser.Provider = 'local'; // Weird syntax for declaring the fields of the user.
+        var newUser = new getUser();
+        newUser.Provider = 'local';
         newUser.email = email;
         newUser.accountType = false;
-        newUser.fName = req.body.fname ? req.body.fname : null;
-        newUser.lName = req.body.lname ? req.body.lname : null;
-        newUser.skills = [];
-        newUser.interests = [];
-        newUser.nonprofitType = null;
         newUser.providerID = null;
-        newUser.password = newUser.generateHash(password); // This is why the weird syntax seems necessary.
-
-        newUser.save(function(err){ // Save the user.
+        newUser.password = newUser.generateHash(password);
+        newUser.save(function(err){ 
           if(err)
             throw err;
+          return done(null, newUser);
+        });
+        var hID = newUser._id;
+        var userA = new userAttr({
+          fName: null,
+          lName: null,
+          userId: hID,
+          url: null
+        });
+        userA.save(function(err) {
+          if(err){
+            console.log(err)
+          }
           return done(null, newUser);
         });
       }
@@ -124,14 +171,12 @@ class User {
   }
 
   passportLogInCurrentUser(email, password, done) {
-    getUser.findOne({'email': email,'Provider' : 'local'}, function(err, user) { // Finding the user.
+    getUser.findOne({'email': email, 'Provider' : 'local'}, function(err, user) { // Finding the user.
       if(err)
         throw new err;
       if(!user){ // Makes sure the user exists.
         return done(null, false);
       }
-      if(user.Provider != 'local') // Make sure the email comes from a local user.
-        return done(null, false);
       if(!user.validPassword(password)) // Validate password.
         return done(null, false);
 
