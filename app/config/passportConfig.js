@@ -38,7 +38,7 @@ module.exports = function(passport) {
             "email": profile._json.email
           }
           User.passportFindOrCreate(user, done); // That one function.
-          }
+        }
         );
       }));
     // =========================================================================

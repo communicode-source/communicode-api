@@ -2,6 +2,9 @@
 const getUser = require('./../models/User');
 const userAttr = require('./../models/UserAttributes');
 const mongoose = require('mongoose');
+/**
+* This should be used for any interaction with the User or UserAttributes collections.
+**/
 class User {
   constructor(req) {
     this.isLoggedIn = (req) ? (req.isAuthenticated()) ? true : false : false;
@@ -26,39 +29,45 @@ class User {
       if(err){
         error = [err];
       }
-      userAttr.findOne({"userId": user._id}, function(errTwo, attr){
+      userAttr.findOne({"userId": id}, function(errTwo, attr){
         if(errTwo){
           error[1] = errTwo;
         }
-        var profile = user;
-        profile.attr = [];
-        for(var key in attr) {
-          console.log(attr[key]);
-          profile.attr[key] = attr[key];
-        }
-        call({"user" : profile, "attributes": attr});
+        call(error, {"user" : user, "attributes": attr});
       });
     });
   }
 
-  updateData(provider, email, call) {
-    if(!this.isLoggedIn){
-      call("Not logged in");
-      return;
-    } else {
-      getUser.find({"Provider" : provider, "email" : email}, function(err, user){
-        if(!user){
-          call("invalid user");
-          return;
-        }
-        if(user.length > 1) {
-          call("We got a big problem... %s identical entries %s, at %s", user.length, user[0].email, user[0].Provider);
-          return;
-        }
-        call(err, user[0]);
-      });
-      }
+  updateData(id, req, functions, call) {
+    var modified = [];
+    if(!this.isLoggedIn) {
+      call('No logged in user');
     }
+    // User first.
+    getUser.findOne({'_id': id}, function(err, user) {
+      if(err) {
+        call(err);
+      }
+      makeChanges(user, functions[0], req.body)
+      user.save();
+    });
+    // Attributes now
+    userAttr.findOne({'userId': id}, function(err, attr) {
+      if(err){
+        call(err);
+      }
+      makeChanges(attr, functions[1], req.body);
+      modified = attr.modifiedPaths();
+      // Checks for a name change, and that the URL has not been manually altered.
+      if((modified.includes('fName') || modified.includes('lName')) && !modified.includes('url')) {
+        process.nextTick(()=>{updateUrl(attr)});
+      } else {
+        attr.save();
+      }
+    });
+
+    call(null, modified);
+  }
 
   getSessUser(param) {
       if(param){
@@ -71,14 +80,8 @@ class User {
     return this.isLoggedIn;
   }
 
-  updateUser(user, newValues, call) {
-    getUser.update({"Provider" : user.provider, "providerID" : user.provderId, "email" : user.email}, {$set: newValues}, function(err, user) {
-      call(err, user);
-    });
-  }
-
-  findUsers(id, call) {
-    getUser.find(id, function(err, users){
+  findUsers(payload, call) {
+    getUser.find(payload, function(err, users) {
       call(err, users);
     });
   }
@@ -90,13 +93,11 @@ class User {
     getUser.findOne({ // Sees if user is already in DB.
       'Provider'         : profile.provider,
       'providerID'       : profile.id,
-      'email'            : profile.email
-    }, function(err, user){
+    }, function(err, user) {
       if(err){ // Return if there is an error.
-        console.log(err);
         return done(err, null);
       }
-      if(user){ // Return an existing user if there is one.
+      if(user) { // Return an existing user if there is one.
         return done(null, user);
       } else { // Make that new user.
           var newUser = new getUser({
@@ -106,31 +107,18 @@ class User {
           Provider: profile.provider,
           }
         );
-        newUser.save(function(err) { // Save that new user.
-          if(err){
-            console.log(err);
-          }
+        newUser.save();
+        var hID = newUser._id;
+        var userA = new userAttr({
+          fName: profile.fname,
+          lName: profile.lname,
+          userId: hID,
+          url: null,
+          interests: [],
+          skills : []
         });
-        var reg = new RegExp(profile.fname.toLowerCase()+'.'+profile.lname.toLowerCase());
-        userAttr.find({url: {$regex: reg, $options: 'i'} }, function(err, res) {
-          console.log(res+"lsdkfjsdlkfj");
-          console.log(res.length);
-          var len = res.length+1;
-          console.log(len);
-          var hID = newUser._id;
-          var userA = new userAttr({
-            fName: profile.fname,
-            lName: profile.lname,
-            userId: hID,
-            url: profile.fname.toLowerCase()+'.'+profile.lname.toLowerCase()+len.toString()
-          });
-          userA.save(function(err) {
-            if(err){
-              console.log(err)
-            }
-            return done(null, newUser);
-          });
-        });
+        process.nextTick(()=>{updateUrl(userA);});
+        return done(null, newUser);
       }
     });
   }
@@ -148,7 +136,7 @@ class User {
         newUser.accountType = false;
         newUser.providerID = null;
         newUser.password = newUser.generateHash(password);
-        newUser.save(function(err){ 
+        newUser.save(function(err){
           if(err)
             throw err;
           return done(null, newUser);
@@ -158,7 +146,9 @@ class User {
           fName: null,
           lName: null,
           userId: hID,
-          url: null
+          url: null,
+          interests: [],
+          skills: []
         });
         userA.save(function(err) {
           if(err){
@@ -186,3 +176,51 @@ class User {
 }
 
 module.exports = User;
+// PRIVATE FUNCTIONS =======================================================================
+const updateUrl = function(attr) {
+  let urlBase = attr.fName.toLowerCase()+'.'+attr.lName.toLowerCase(); // Base of the URL.
+  let reg = new RegExp("^"+urlBase+"[0-9]*$"); // Regex used for matching.
+  userAttr.find({url: {$regex: reg, $options: 'i'}}, function(err, matches) {
+    let length = matches.length + 1; // Increase the count of that url by one for this user.
+    attr.url = urlBase+length.toString();
+    attr.markModified('url');
+    attr.save();
+  });
+}
+
+const defaultStringUpdate = function(user, val, key) {
+  if(user[key] != val){
+    user[key] = val;
+    user.markModified(key);
+  }
+};
+
+const defaultArrayUpdate = function(user, val, key) {
+  if(!user[key].includes(val)) {
+    user[key].push(val);
+    user.markModified(key);
+  }
+};
+
+const makeChanges = function(dbVal, direction, input) {
+  // Loop through the values marked for change.
+  for(let key in direction) {
+    // Make sure there is data from the page.
+    if(!input[key]) {
+      continue;
+    }
+    // Call the designated function as defined when calling.
+    if(typeof direction[key] == 'functions') {
+      functions[0][key](dbVal, input[key], key);
+    } else {
+      switch(direction[key]) {
+        case 'string':
+          defaultStringUpdate(dbVal, input[key], key);
+          break;
+        case 'array':
+          defaultArrayUpdate(dbVal, input[key], key);
+          break;
+      }
+    }
+  }
+}
