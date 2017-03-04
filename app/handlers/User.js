@@ -70,7 +70,7 @@ class User {
   }
 
   getSessUser(param) {
-      if(param){
+      if(param) {
         return (this.user) ? this.user[param] : 'No signed in user';
       }
       return (this.user) ? this.user : 'No signed in user';
@@ -210,7 +210,7 @@ const makeChanges = function(dbVal, direction, input) {
       continue;
     }
     // Call the designated function as defined when calling.
-    if(typeof direction[key] == 'functions') {
+    if(typeof direction[key] == 'function') {
       functions[0][key](dbVal, input[key], key);
     } else {
       switch(direction[key]) {
