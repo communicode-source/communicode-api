@@ -119,7 +119,7 @@
             if(key == 'err' || key == 'msg')
               continue;
             $( "#changes" ).show();
-            if(info[key] != false){
+            if(info[key] != null){
               $( "#changes" ).append(
                 $('<li>').attr("id", "success").append(
                   key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email")+' changed to <u>'+info[key]+'</u>'
@@ -127,7 +127,7 @@
               )
             } else {
               $( "#changes" ).append(
-                  '<li>'+ key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email") + ' has not been changed</li>'
+                  '<li>'+ key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email") + ' has been altered</li>'
               )
             }
           };

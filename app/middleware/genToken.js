@@ -1,5 +1,5 @@
 // JSON Web Tokens = awesome.
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const userHandler = require('./../handlers/User');
 //var User = require('./../models/User.js');
@@ -24,24 +24,21 @@ var genToken = {
 // Makes the token.
 function generateToken(req) {
   const handler = new userHandler(req);
-  // Makes an expiration date (in days).
-  var expiration = expiresIn(15);
+  // Makes an expiration date (in minutes).
+  const expiration = expiresIn(15);
   // Makes the actual token to be returned.
   // Note: iss should be either a username or user ID.
   if(!handler.isSignedIn())
     return "Please log in first"
 
-  var token = jwt.sign({iss: handler.getSessUser('email'), exp: expiration}, require('./../config/auth.json').token);
+  let token = jwt.sign({iss: handler.getSessUser('email'), exp: expiration}, require('./../config/auth.json').token);
   return token;
 
 }
 
 // Returns the Unix time in X number of minutes.
 // (if you don't know what Unix or Epoch or POSIX time is, look it up).
-function expiresIn(numMin) {
-  var dateObj = new Date(); // Creates the current date object.
-  var expir = new Date(dateObj.getTime() + numMin*60000); // Gets the date time in X minutes.
-  return expir.getTime(); // Returns the Unix time for comparison later on.
-}
+let expiresIn = numMin => new Date(new Date().getTime() + numMin*60000).getTime(); // I love arrow syntax.
+
 
 module.exports = genToken;

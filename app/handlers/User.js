@@ -25,7 +25,7 @@ class User {
 
   getProfile(id, call) {
     getUser.findOne({"_id": id}, function(err, user) {
-      var error = null;
+      let error = null;
       if(err){
         error = [err];
       }
@@ -39,7 +39,7 @@ class User {
   }
 
   updateData(id, req, functions, call) {
-    var modified = [];
+    let modified = {};
     if(!this.isLoggedIn) {
       call('No logged in user');
     }
@@ -48,7 +48,8 @@ class User {
       if(err) {
         call(err);
       }
-      makeChanges(user, functions[0], req.body)
+      makeChanges(user, functions[0], req.body, modified)
+
       user.save();
     });
     // Attributes now
@@ -56,17 +57,17 @@ class User {
       if(err){
         call(err);
       }
-      makeChanges(attr, functions[1], req.body);
-      modified = attr.modifiedPaths();
+      makeChanges(attr, functions[1], req.body, modified);
       // Checks for a name change, and that the URL has not been manually altered.
-      if((modified.includes('fName') || modified.includes('lName')) && !modified.includes('url')) {
-        process.nextTick(()=>{updateUrl(attr)});
+      if((modified.fName || modified.lName) && !modified.url) {
+        process.nextTick(()=>{updateUrl(attr);});
+        modified['url'] = null;
       } else {
         attr.save();
       }
+      call(null, modified);
     });
 
-    call(null, modified);
   }
 
   getSessUser(param) {
@@ -100,7 +101,7 @@ class User {
       if(user) { // Return an existing user if there is one.
         return done(null, user);
       } else { // Make that new user.
-          var newUser = new getUser({
+          let newUser = new getUser({
           email: profile.email,
           providerID: profile.id,
           accountType: false,
@@ -108,8 +109,8 @@ class User {
           }
         );
         newUser.save();
-        var hID = newUser._id;
-        var userA = new userAttr({
+        let hID = newUser._id;
+        let userA = new userAttr({
           fName: profile.fname,
           lName: profile.lname,
           userId: hID,
@@ -130,7 +131,7 @@ class User {
       if(user) {
         return done(null, false);
       } else {
-        var newUser = new getUser();
+        let newUser = new getUser();
         newUser.Provider = 'local';
         newUser.email = email;
         newUser.accountType = false;
@@ -141,8 +142,8 @@ class User {
             throw err;
           return done(null, newUser);
         });
-        var hID = newUser._id;
-        var userA = new userAttr({
+        let hID = newUser._id;
+        let userA = new userAttr({
           fName: null,
           lName: null,
           userId: hID,
@@ -188,21 +189,25 @@ const updateUrl = function(attr) {
   });
 }
 
-const defaultStringUpdate = function(user, val, key) {
+const defaultStringUpdate = (user, val, key) => {
   if(user[key] != val){
     user[key] = val;
     user.markModified(key);
+    return true;
   }
+  return false;
 };
 
-const defaultArrayUpdate = function(user, val, key) {
+const defaultArrayUpdate = (user, val, key) => {
   if(!user[key].includes(val)) {
     user[key].push(val);
     user.markModified(key);
+    return true;
   }
+  return false;
 };
 
-const makeChanges = function(dbVal, direction, input) {
+const makeChanges = (dbVal, direction, input, tracker) => {
   // Loop through the values marked for change.
   for(let key in direction) {
     // Make sure there is data from the page.
@@ -211,16 +216,23 @@ const makeChanges = function(dbVal, direction, input) {
     }
     // Call the designated function as defined when calling.
     if(typeof direction[key] == 'function') {
-      functions[0][key](dbVal, input[key], key);
+      if(functions[0][key](dbVal, input[key], key) === true) {
+        tracker[key] = input[key];
+      }
     } else {
       switch(direction[key]) {
         case 'string':
-          defaultStringUpdate(dbVal, input[key], key);
+          if(defaultStringUpdate(dbVal, input[key], key) === true) {
+            tracker[key] = input[key];
+          }
           break;
         case 'array':
-          defaultArrayUpdate(dbVal, input[key], key);
+          if(defaultArrayUpdate(dbVal, input[key], key) === true) {
+            tracker[key] = input[key];
+          }
           break;
       }
     }
+
   }
 }
