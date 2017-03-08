@@ -21,7 +21,7 @@ module.exports = function(req, res, next) {
         return;
       }
       // More user authentication needs to happen here.
-      user = (key == decode.iss || decode.iss == new User(req).getSessUser('email')) ? true : false; // Needs to check that decode.iss == user here also.
+      user = (decode.id == new User(req).getSessUser('_id')) ? true : false; 
       // If user is false then return error.
       if(!user) {
         res.status(200).json({err: true, msg: "Invalid user"});

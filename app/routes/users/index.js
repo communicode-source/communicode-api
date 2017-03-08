@@ -90,6 +90,10 @@ users.route('/me')
         res.json(data);
       });
   });
-
+users.route('/ff')
+  .get((req, res) => {
+    var t = new User();
+    res.send(t.ff().toString());
+  });
 
 module.exports = users;
