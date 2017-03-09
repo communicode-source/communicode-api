@@ -1,46 +1,37 @@
 // Web development framework, mostly used for routing here.
 var express    = require('express');
-// Used for routing.
 var path       = require("path");
-// Instantiation of the Express object.
 var app        = express();
-// Helps with returning JSON in the correct fromat.
-var bodyParser = require('body-parser');
 
-var sanitize  = require('./app/middleware/secureForm');
-// Logging things.
+var bodyParser = require('body-parser');
+var sanitize   = require('./app/middleware/secureForm');
 var logger     = require('morgan');
-// Mongo database schema... Because we need a schema for our schemaless database service...
 var mongoose   = require('mongoose');
-// Session Configuration
-var redis = require('./app/config/sessions')(app);
-// Login stuff.
-var passport = require('passport');
-// DB Stuff.
+var redis      = require('./app/config/sessions')(app);
+var passport   = require('passport');
+var flash      = require('connect-flash');
+
 
 const database = require('./app/config/database.js');
-// Making a connection to the Mongo database, and returning an error on failure.
 mongoose.connect(database.url);
 mongoose.connection.on('error', function() {
   console.info("Could not run mongodb, did you forget to run mongod?");
 });
 
 // Middleware stuff.
-// These tell Express what we are using for what.
 app.use(bodyParser.json());
-// Telling the body parser we are using the URL for information.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(sanitize);
 app.use(logger('dev'));
-// What port to start the HTTP(S) server.
 app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 3); // Now we can read the freaking json outputs. YEAH.
+
 // Session stuff
 // THIS MUST COME BEFORE ANYTHING SESSION-DEPENDENT HAPPENS. ==================================================
-//app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
 require('./app/config/sessions')(app);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 require('./app/config/passportConfig')(passport);
 // PLEASE DON'T MOVE THIS =====================================================================================
 // Token authentication required for all /secure api endpoints.

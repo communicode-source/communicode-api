@@ -43,8 +43,9 @@ oAuth.route('/local/register') // Register Route.
 oAuth.route('/local/login') // Login Route.
   .post(passport.authenticate('local-login', {
     successRedirect: '/oauth/profile',
-    failureRedirect: '/'
-  }));
+    failureRedirect: '/',
+    failureFlash: true
+}));
 
 //==============================================================================
 // General routes. =============================================================

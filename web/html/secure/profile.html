@@ -135,7 +135,7 @@
       var email = $("#target").val();
       $("#target").val("");
       $.get("/api/users/filter/"+email, function(user) {
-        document.getElementById("targetData").innerHTML = JSON.stringify(user, null, '<p>');
+        document.getElementById("#targetData").innerHTML = JSON.stringify(user, null, '<p>');
         $("#targetData").show();
         $("#target").hide();
       });

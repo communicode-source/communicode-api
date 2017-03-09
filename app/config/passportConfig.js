@@ -78,12 +78,12 @@ const logInCurrentUser = function(email, password, done) {
     if(err)
       throw new err;
     if(!user){ // Makes sure the user exists.
-      return done(null, false);
+      return done(null, false, {message: 'Invalid Username or Password :('});
     }
     if(user.Provider != 'local') // Make sure the email comes from a local user.
-      return done(null, false);
+      return done(null, false, {message: 'Invalid Username or Password :('});
     if(!user.validPassword(password)) // Validate password.
-      return done(null, false);
+      return done(null, false, {message: 'Invalid Username or Password :('});
 
     return done(null, user); // Return the user.
   });
@@ -182,7 +182,7 @@ module.exports = function(passport) {
       *             -- Cooper <(2/10/17)
       *
       **/
-      passReqToCallback: true // AWFUL. RUN. AS FAR AWAY AS YOU CAN. 0/10. NEVER RECOMMEND.
+      passReqToCallback:  true // AWFUL. RUN. AS FAR AWAY AS YOU CAN. 0/10. NEVER RECOMMEND.
       /**
       * WHAT THE ****. NOW IT WORKS? TREVORE CRUPI CAN VOUCH IT WASN'T WORKING BEFORE.
       *      THIS IS A LOAD OF CRAP. SCREW THIS. INCONSISTENCY REIGNS SUPREME IN JAVASCRIPT APPARENTLY.
