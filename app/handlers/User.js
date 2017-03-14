@@ -35,10 +35,6 @@ class User {
     this.user = (req) ? (req.user) ? req.user : false : false;
   }
 
-  ff() {
-    return getUrlNumber(['a1', 'b2', 'c3', '4', '5', '6', '7', '9', '10', '11'], 9);
-  }
-
   returnAll(call) {
     getUser.find({}, function(err, users){
       call(err, users)
@@ -274,7 +270,6 @@ const getUrlNumber = (set, length) => {
   if(length === -1) {
     return 1;
   }
-  let lastTry = 0;
   let cor = 0;
   let inc = length;
   let userNum = getMatch(set, length);
