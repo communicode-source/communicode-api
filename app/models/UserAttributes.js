@@ -5,6 +5,7 @@ module.exports = mongoose.model('UserAttribute', {
   fName         : String,
   lName         : String,
   url           : String,
+  urlNum        : Number,
   nonprofitType : String,
   skills        : Object,
   interests     : Object,

@@ -282,10 +282,8 @@ const getUrlNumber = (set, length) => {
     return +1;
   }
   length = Math.floor(newLength(cor, inc));
-  // Half way point
-  while(cor + 1 != inc || iterator > 30) {
+  while(cor + 1 != inc && iterator < 30) {
     iterator++;
-    // Issues here
     userNum = getMatch(set, length);
     if(userNum == length + 1) {
       cor = length;
@@ -294,7 +292,6 @@ const getUrlNumber = (set, length) => {
     }
     length = Math.floor(newLength(cor, inc));
   }
-  console.log(iterator);
   return (+getMatch(set, cor) + 1);
 }
 const newLength = (cor, inc) => ((cor + inc)/2);
