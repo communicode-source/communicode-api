@@ -1,6 +1,6 @@
-var oAuth    = require('express').Router(); // I really regret calling this oAuth... --Cooper
-var passport = require('passport');
-var path     = require('path');
+const oAuth    = require('express').Router(); // I really regret calling this oAuth... --Cooper
+const passport = require('passport');
+const path     = require('path');
 //==============================================================================
 // Facebook Routes. ============================================================
 //==============================================================================

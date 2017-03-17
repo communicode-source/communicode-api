@@ -6,15 +6,15 @@ $(document).ready(function() {
       e.preventDefault();
       var btn = $(this);
 
-      $.ajax({
+      /*$.ajax({
 			  type: "POST",
 			  url: "http://localhost:3000/user/update/" + id + "/name",
 			  data: JSON.stringify({fname: $("#fname").val(), lname: $("#lname").val()}),
 			  dataType: "JSON",
         success: function() {
-          
+
         }
-			});
+			});*/
 
       btn.button('loading');
       setTimeout(function () {

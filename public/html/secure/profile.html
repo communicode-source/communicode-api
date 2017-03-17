@@ -7,6 +7,12 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap">
     <script src="/js/jquery"></script>
   </head>
+  <style media="screen">
+    #results {
+      max-height: 400px;
+      overflow-y: scroll;
+    }
+  </style>
   <body>
     <div class="col-md-4">
       <p id="loading">Loading...</p>
@@ -25,6 +31,8 @@
         <input class="update" type="text" name="email" id="email" value="" placeholder="email"></div>
         <div><label for="interests special">Interests: </label>
         <input class="update" type="text" name="interests" id="interests" placeholder="Add interest"></div>
+        <div><label for="skills special">Skills: </label>
+        <input class="update" type="text" name="skills" id="skills" placeholder="Add skill"></div>
         <center><button type="submit" class="btn btn-primary" name="button" id="submitUserData" style="">Submit!</button></center>
       </form>
       <center>
@@ -43,7 +51,7 @@
     <div class="col-md-4">
       <p id="otherLoading">Loading...</p>
       <center><button type="button" class="btn btn-default" id="loadUser" name="button" style="display: none;">Get other user profile.</button></center>
-      <input type="text" name="" id="target" class="update" value="" style="display: none; width: 100%;" placeholder="User email">
+      <input type="text" name="" id="target" class="update" value="" style="display: none; width: 100%;" placeholder="User URL">
       <div id="targetData" style="display: none;"></div>
       <hr/>
     </div>
@@ -93,7 +101,8 @@
         'email': $( "#email" ).val(),
         'fName': $( "#fname" ).val(),
         'lName': $( "#lname" ).val(),
-        'interests': $( "#interests" ).val()
+        'interests': $( "#interests" ).val(),
+        'skills': $( "#skills" ).val(),
       };
       $.ajax({
         url: "/api/users/update",
@@ -110,7 +119,7 @@
             if(key == 'err' || key == 'msg')
               continue;
             $( "#changes" ).show();
-            if(info[key] != false){
+            if(info[key] != null){
               $( "#changes" ).append(
                 $('<li>').attr("id", "success").append(
                   key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email")+' changed to <u>'+info[key]+'</u>'
@@ -118,7 +127,7 @@
               )
             } else {
               $( "#changes" ).append(
-                  '<li>'+ key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email") + ' has not been changed</li>'
+                  '<li>'+ key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email") + ' has been altered</li>'
               )
             }
           };
@@ -132,9 +141,9 @@
       });
     });
     $("#loadUser").click(function() {
-      var email = $("#target").val();
+      var url = $("#target").val();
       $("#target").val("");
-      $.get("/api/users/filter/"+email, function(user) {
+      $.get("/"+url, function(user) {
         document.getElementById("targetData").innerHTML = JSON.stringify(user, null, '<p>');
         $("#targetData").show();
         $("#target").hide();

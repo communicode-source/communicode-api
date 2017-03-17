@@ -1,17 +1,17 @@
-var User = require('./../models/User.js');
+const User = require('./../handlers/User');
 
 var userFunctions = {
   isLoggedIn: function(req, res, next) {
 
     // If user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+    if (new User(req).isSignedIn())
         return next();
 
     // If they aren't redirect them to the home page
     res.redirect('/');
   },
   ensureNotLogged: function(req, res, next) {
-    if(!req.isAuthenticated())
+    if(!new User(req).isSignedIn())
       return next();
     res.redirect('/oauth/profile');
   },

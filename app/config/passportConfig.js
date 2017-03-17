@@ -95,6 +95,9 @@ const logInCurrentUser = function(email, password, done) {
   });
 }
 
+const t                 = require('./../handlers/User');
+const UserModel         = new t({isAuthenticated: function() {return false;}});
+
 // Initialize with the passport instance to configure passport to run properly.
 module.exports = function(passport) {
 
@@ -126,8 +129,8 @@ module.exports = function(passport) {
             "id": profile.id,
             "email": profile._json.email
           }
-          findOrCreateUser(user, done); // That one function.
-          }
+          UserModel.passportFindOrCreate(user, done); // That one function.
+        }
         );
       }));
     // =========================================================================
@@ -147,7 +150,7 @@ module.exports = function(passport) {
             "id": profile.id,
             "email": profile._json.email
           }
-          findOrCreateUser(user, done); // That one function.
+          UserModel.passportFindOrCreate(user, done); // That one function.
         });
       }
     ));
@@ -157,7 +160,7 @@ module.exports = function(passport) {
     passport.use(new GoogleStrategy({
       clientID      : auth.google.clientID,
       clientSecret  : auth.google.clientSecret,
-      callbackURL     : 'http://localhost:3000/oauth/google/login/callback',
+      callbackURL   : 'http://localhost:3000/oauth/google/login/callback',
       profileFields : ['id', 'emails', 'name']
     },
     function(token, refreshToken, profile, done) {
@@ -170,7 +173,7 @@ module.exports = function(passport) {
           "id": profile.id,
           "email": profile.email
         };
-        findOrCreateUser(user, done);
+        UserModel.passportFindOrCreate(user, done);
       });
     }));
     // =========================================================================
@@ -197,7 +200,7 @@ module.exports = function(passport) {
     },
       function(req, email, password, done){
         process.nextTick(function() { // Async.
-          createLocalUser(req, email, password, done); // That one function.
+          UserModel.passportCreateLocalUser(req, email, password, done); // That one function.
         });
       }
     ));
@@ -209,7 +212,7 @@ module.exports = function(passport) {
     },
     function(email, password, done) {
       process.nextTick(function() { // Async.
-        logInCurrentUser(email, password, done); // That one function.
+        UserModel.passportLogInCurrentUser(email, password, done);
       });
     }));
 };

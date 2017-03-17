@@ -41,7 +41,7 @@ require('./app/config/passportConfig')(passport);
 // PLEASE DON'T MOVE THIS =====================================================================================
 // Token authentication required for all /secure api endpoints.
 app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
-app.use('/authenticate*', [require('./app/middleware/userLogin').ensureNotLogged]);
+app.use('/web/*', [require('./app/middleware/userLogin').ensureNotLogged]);
 
 app.use('/', express.static(path.join(__dirname, 'views/public'), {
   extensions: ['html']
@@ -49,6 +49,10 @@ app.use('/', express.static(path.join(__dirname, 'views/public'), {
 app.use('/Images', express.static(path.join(__dirname, 'public/Images'), {
   extensions: ['css']
 }));
+
+
+app.use('/Images', express.static(path.join(__dirname, 'public/Images')));
+
 app.use('/css', express.static(path.join(__dirname, 'public/css'), {
   extensions: ['css']
 }));
@@ -56,7 +60,7 @@ app.use('/js', express.static(path.join(__dirname, 'public/js'), {
   extensions: ['js']
 }));
 
-app.use('/fonts', express.static(path.join(__dirname, 'web/fonts')));
+app.use('/fonts', express.static(path.join(__dirname, 'public/fonts')));
 
 app.all('/*', function(req, res, next){
   res.header("Access-Control-Allow-Origin", "*");

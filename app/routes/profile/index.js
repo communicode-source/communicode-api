@@ -5,12 +5,17 @@
 **/
 const profile = require('express').Router();
 
+var Handler = require('./../../handlers/User');
+
 profile.route('/register/interests')
 
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
 
+    var UserHandler = new Handler(req);
+    var _id = UserHandler.getSessUser("_id");
     res.render('secure/interests.twig', {
-      "title": "Welcome to Communicode"
+      "title": "Welcome to Communicode",
+      "_id": _id
     });
   });
 
