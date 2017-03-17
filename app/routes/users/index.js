@@ -75,6 +75,21 @@ users.route('/update')
     });
 
   });
+
+users.route('/update/:id/name')
+
+  .put((req, res) => {
+    User.findById(req.params.id, function(err, user) {
+      if(err)
+        res.status(500).json({"error": "Could not update"});
+
+      user.fname = req.body.fname;
+      user.lname = req.body.lname;
+      user.save();
+      res.status(200).json({"message": "Updated successfully"});
+    });
+  });
+
 users.route('/me')
   .get((req, res) => {
     Users.findOne({"email": req.user.email}, function(err, user) {

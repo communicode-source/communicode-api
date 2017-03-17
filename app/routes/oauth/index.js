@@ -37,8 +37,8 @@ oAuth.route('/google/login/callback')
 //==============================================================================
 oAuth.route('/local/register') // Register Route.
   .post(passport.authenticate('local-signup', {
-    successRedirect : '/oauth/profile',
-    failureRedirect : '/'
+      successRedirect : '/register/interests',
+      failureRedirect : '/'
   }));
 oAuth.route('/local/login') // Login Route.
   .post(passport.authenticate('local-login', {
@@ -51,7 +51,9 @@ oAuth.route('/local/login') // Login Route.
 //==============================================================================
 oAuth.route('/profile')
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
-    res.status(200).sendFile(path.join(__dirname, '/../../../web/html/secure/profile.html'));
+    res.render("secure/profile.twig", {
+      "title": "Profile"
+    });
   });
 oAuth.route('/logout')
   .get((req, res) => {

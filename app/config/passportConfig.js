@@ -47,6 +47,11 @@ const findOrCreateUser = function(profile, done) {
 // Function to create a user in the local database.
 const createLocalUser = function(req, email, password, done) {
   User.findOne({'email': email}, function(err, user) {
+
+    var accountType = false;
+    if(req.body.commit == "Nonprofit")
+      accountType = true;
+
     if(err)
       return done(err);
     if(user) {
@@ -55,7 +60,7 @@ const createLocalUser = function(req, email, password, done) {
       var newUser = new User(); // Create a new user schema.
       newUser.Provider = 'local'; // Weird syntax for declaring the fields of the user.
       newUser.email = email;
-      newUser.accountType = false;
+      newUser.accountType = accountType;
       newUser.fName = req.body.fname ? req.body.fname : null;
       newUser.lName = req.body.lname ? req.body.lname : null;
       newUser.skills = [];
@@ -72,6 +77,7 @@ const createLocalUser = function(req, email, password, done) {
     }
   });
 }
+
 // Function to log in the current user in the lcoal database.
 const logInCurrentUser = function(email, password, done) {
   User.findOne({'email': email}, function(err, user) { // Finding the user.
