@@ -29,6 +29,13 @@ routes.get('/api', (req, res) => {
   res.status(200).json({ message: 'Connection Made!' });
 });
 
+routes.get('/findPath', (req, res) => {
+  if(new userInt(req).isSignedIn() === false) {
+    res.redirect('/register/step.2');
+  } else {
+    res.redirect('/');
+  }
+});
 
 routes.get('/:user', (req, res) => {
   var getData = new userInt(req);

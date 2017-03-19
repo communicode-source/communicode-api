@@ -2,7 +2,6 @@ var express    = require('express');
 var path       = require("path");
 var app        = express();
 var bodyParser = require('body-parser');
-
 var sanitize  = require('./app/middleware/secureForm');
 var logger    = require('morgan');
 
@@ -32,7 +31,6 @@ app.set('json spaces', 3);
 
 
 // THIS MUST COME BEFORE ANYTHING SESSION-DEPENDENT HAPPENS. ==================================================
-//app.use(require('express-session')({ secret: 'keyboard cat...meow', saveUninitialized: true, resave: true}));
 require('./app/config/sessions')(app);
 app.use(passport.initialize());
 app.use(passport.session());

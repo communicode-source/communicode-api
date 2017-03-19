@@ -9,7 +9,7 @@ oAuth.route('/facebook/login')
 
 oAuth.route('/facebook/login/callback')
   .get(passport.authenticate('facebook', {
-        successRedirect : '/register/step.2',
+        successRedirect : '/findPath',
         failureRedirect : '/'
     }));
 //==============================================================================
