@@ -11,7 +11,7 @@ const profile    = require('./profile');
 const JwtRoutes  = require('./token');
 const userInt    = require('../handlers/User');
 const path       = require('path');
-
+const projects   = require('./projects');
 // Telling express what route goes to this greeting.
 routes.use('/api/greeting', greetings);
 routes.use('/api/secure/mail', mailDaemon);
@@ -22,7 +22,7 @@ routes.use('/oauth', AuthRoutes);
 routes.use('/', profile);
 // The actual generating of the token should be done when a user logs in or something.
 routes.use('/api/token', JwtRoutes);
-
+routes.use('/api/projects', projects);
 // res = response, req = request.
 // More routing, telling express what to send back.
 routes.get('/api', (req, res) => {
