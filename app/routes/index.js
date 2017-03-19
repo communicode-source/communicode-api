@@ -30,11 +30,14 @@ routes.get('/api', (req, res) => {
 });
 
 routes.get('/findPath', (req, res) => {
-  if(new userInt(req).isSignedIn() === false) {
-    res.redirect('/register/step.2');
-  } else {
-    res.redirect('/');
-  }
+  const u = new userInt(req);
+  u.getUserAttributes(['interests'], u.getSessUser('_id'),  function(err, interests) {
+    if(interests['interests'] && interests['interests'] !== null && interests['interests'].length > 0) {
+      res.redirect('/');
+    } else {
+      res.redirect('/register/step.2');
+    }
+  });
 });
 
 routes.get('/:user', (req, res) => {
