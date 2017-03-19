@@ -47,7 +47,7 @@ oAuth.route('/local/register/dev') // Register Route.
     }));
 oAuth.route('/local/login') // Login Route.
   .post(passport.authenticate('local-login', {
-    successRedirect: '/oauth/profile',
+    successRedirect: '/findPath',
     failureRedirect: '/'
   }));
 
