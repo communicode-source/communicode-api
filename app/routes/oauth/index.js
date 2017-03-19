@@ -9,7 +9,7 @@ oAuth.route('/facebook/login')
 
 oAuth.route('/facebook/login/callback')
   .get(passport.authenticate('facebook', {
-        successRedirect : '/oauth/profile',
+        successRedirect : '/register/step.2',
         failureRedirect : '/'
     }));
 //==============================================================================
@@ -19,7 +19,7 @@ oAuth.route('/github/login')
   .get(passport.authenticate('github', {scope: 'email'}));
 oAuth.route('/github/login/callback')
   .get(passport.authenticate('github', {
-    successRedirect: '/oauth/profile',
+    successRedirect: '/register/step.2',
     failureRedirect: '/'
   }));
 //==============================================================================
@@ -29,17 +29,22 @@ oAuth.route('/google/login')
   .get(passport.authenticate('google', {scope: 'email'}));
 oAuth.route('/google/login/callback')
   .get(passport.authenticate('google', {
-    successRedirect: '/oauth/profile',
+    successRedirect: '/register/step.2',
     failureRedirect: '/'
   }));
 //==============================================================================
 // Local Auth Routes. ==========================================================
 //==============================================================================
-oAuth.route('/local/register') // Register Route.
-  .post(passport.authenticate('local-signup', {
-      successRedirect : '/register/interests',
+oAuth.route('/local/register/dev') // Register Route.
+  .post(passport.authenticate('local-signup-dev', {
+      successRedirect : '/register/step.2',
       failureRedirect : '/'
   }));
+  oAuth.route('/local/register/nonprofit') // Register Route.
+    .post(passport.authenticate('local-signup-nonprofit', {
+        successRedirect : '/register/step.2',
+        failureRedirect : '/'
+    }));
 oAuth.route('/local/login') // Login Route.
   .post(passport.authenticate('local-login', {
     successRedirect: '/oauth/profile',

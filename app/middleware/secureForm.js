@@ -1,17 +1,17 @@
 var sanitizer  = require('sanitizer');
 
 module.exports = function( req, res, next ) {
-  req.body.sanatized = {};
-  req.params.sanatized = {};
+  req.body.sanitized = {};
+  req.params.sanitized = {};
   for(var key in req.body) {
-    if(key == "sanatized")
+    if(key == "sanitized")
       continue;
-    req.body.sanatized[key] = sanitizer.escape(req.body[key]);
+    req.body.sanitized[key] = sanitizer.escape(req.body[key]);
   };
   for(var key in req.params) {
-    if(key == "sanatized")
+    if(key == "sanitized")
       continue;
-    req.params.sanatized[key] = sanitizer.escape(req.params[key]);
+    req.params.sanitized[key] = sanitizer.escape(req.params[key]);
   };
   next();
 }

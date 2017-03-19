@@ -18,6 +18,7 @@ greetings.route('/')
   })
   // For POST HTTP request type.
   .post((req, res) => {
+
     var newGreeting = new Greeting({
       'language': req.body.language,
       'text': req.body.text
@@ -51,10 +52,15 @@ greetings.route('/:id')
 
       greeting.language = req.body.language;
       greeting.text = req.body.text;
-      greeting.save();
-      res.status(200).json({"message": "Updated successfully"});
+
+      greeting.save(function(err, data) {
+
+        console.log("Saved: " + data);
+        res.status(200).json({"message": "Updated successfully"});
+      });
     });
   })
+
   // DELETE protocol is self explanatory.
   .delete((req, res) => {
     Greeting.remove({ _id: req.body.id }, function(err) {

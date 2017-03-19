@@ -2,24 +2,42 @@ $(document).ready(function() {
 
   $('.name-input-form button').button({loadingText: '<i class="fa fa-check" aria-hidden="true"></i>'});
 
-  $('.name-input-form button').click(function (e) {
+  $('.name-input-form a').click(function (e) {
       e.preventDefault();
       var btn = $(this);
 
-      /*$.ajax({
-			  type: "POST",
-			  url: "http://localhost:3000/user/update/" + id + "/name",
-			  data: JSON.stringify({fname: $("#fname").val(), lname: $("#lname").val()}),
+      var url = $(this).attr("href");
+
+      $.ajax({
+			  type: "PUT",
+			  url: url,
+			  data: {fname: $("#fname").val(), lname: $("#lname").val()},
 			  dataType: "JSON",
-        success: function() {
-
-        }
-			});*/
-
-      btn.button('loading');
-      setTimeout(function () {
+        done: function() {
           btn.button('finished');
-      }, 500);
+        }
+			});
+
+  });
+
+  $('.organization-input-form a').click(function (e) {
+
+      console.log("This is right.");
+      e.preventDefault();
+      var btn = $(this);
+
+      var url = $(this).attr("href");
+
+      $.ajax({
+			  type: "PUT",
+			  url: url,
+			  data: {organizationName: $("#organizationName").val()},
+			  dataType: "JSON",
+        done: function() {f
+          btn.button('finished');
+        }
+			});
+
   });
 
   var pictures = {
@@ -58,6 +76,22 @@ $(document).ready(function() {
   $('.submit-interests').click(function(event) {
     event.preventDefault();
 
-    $('html, body').animate({scrollTop: 0}, 300);
+    var interests = [];
+    $('.checked').each(function(el) {
+      var id = $(this).closest('div').attr("id");
+      interests.push(pictures[id]);
+    });
+
+    var url = $(this).attr('href');
+
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {interests: interests},
+      dataType: "JSON"
+    }).done(function(jqXhr) {
+      window.location.href= '/' + jqXhr.data.url;
+    });
+
   });
 });

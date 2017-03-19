@@ -7,16 +7,29 @@ const profile = require('express').Router();
 
 var Handler = require('./../../handlers/User');
 
-profile.route('/register/interests')
+profile.route('/register/step.2')
 
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
 
     var UserHandler = new Handler(req);
-    var _id = UserHandler.getSessUser("_id");
-    res.render('secure/interests.twig', {
-      "title": "Welcome to Communicode",
-      "_id": _id
-    });
+    var id = UserHandler.getSessUser("_id");
+    if(!UserHandler.getSessUser('accountType')) {
+      UserHandler.getUserAttributes(["fName", "lName"], id, function(err, result) {
+        res.render('secure/interests.twig', {
+          "title": "Welcome to Communicode",
+          "_id": id,
+          "fName": result.fName,
+          "lName": result.lName
+        });
+      });
+    } else {
+
+      res.render('secure/type.twig', {
+        "title": "Welcome to Communicode",
+        "_id": id
+      });
+
+    }
   });
 
 // Export of rexternal use.

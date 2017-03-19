@@ -45,12 +45,8 @@ const findOrCreateUser = function(profile, done) {
   });
 }
 // Function to create a user in the local database.
-const createLocalUser = function(req, email, password, done) {
+const createLocalUser = function(req, email, password, accountType, done) {
   User.findOne({'email': email}, function(err, user) {
-
-    var accountType = false;
-    if(req.body.commit == "Nonprofit")
-      accountType = true;
 
     if(err)
       return done(err);
@@ -179,7 +175,7 @@ module.exports = function(passport) {
     // =========================================================================
     // LOCAL REGISTRATION ======================================================
     // =========================================================================
-    passport.use('local-signup', new LocalStrategy({
+    passport.use('local-signup-dev', new LocalStrategy({
       usernameField: 'email', // Changes the default from 'username' to 'email.'
       /**
       *
@@ -200,7 +196,33 @@ module.exports = function(passport) {
     },
       function(req, email, password, done){
         process.nextTick(function() { // Async.
-          UserModel.passportCreateLocalUser(req, email, password, done); // That one function.
+          UserModel.passportCreateLocalUser(req, email, password, 0, done); // That one function.
+        });
+      }
+    ));
+
+    passport.use('local-signup-nonprofit', new LocalStrategy({
+      usernameField: 'email', // Changes the default from 'username' to 'email.'
+      /**
+      *
+      * THIS IS THE DUMBEST THING EVER. SINCE WHEN DID HAVING A SPACE AFTER THE KEY
+      *      TO A JSON OBJECT ACTUALLY AFFECT THE GOSH DANG VALUE. JAVASCRIPT IS NOT
+      *      A FLIPPING WHITE SPACE LANGUAGE. THIS SHOULD NOT BE A PROBLEM. WHY DO
+      *      OTHER THINGS WORK FINE WITHOUT THE SPACE? HOW DO YOU EVEN ACCOMPLISH
+      *      MAKING SUCH A THING ILLEGAL WHEN IT REALLY ISN'T?!?!?! CRAP.
+      *             -- Cooper <(2/10/17)
+      *
+      **/
+      passReqToCallback: true // AWFUL. RUN. AS FAR AWAY AS YOU CAN. 0/10. NEVER RECOMMEND.
+      /**
+      * WHAT THE ****. NOW IT WORKS? TREVORE CRUPI CAN VOUCH IT WASN'T WORKING BEFORE.
+      *      THIS IS A LOAD OF CRAP. SCREW THIS. INCONSISTENCY REIGNS SUPREME IN JAVASCRIPT APPARENTLY.
+      *             -- Cooper (2/10/17)
+      **/
+    },
+      function(req, email, password, done){
+        process.nextTick(function() { // Async.
+          UserModel.passportCreateLocalUser(req, email, password, 1, done); // That one function.
         });
       }
     ));

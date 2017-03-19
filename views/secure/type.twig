@@ -104,7 +104,7 @@ hub.<!DOCTYPE html>
 	<div class="container-fluid hero">
 		<center>
 			<div class="hero-text">
-				<h1>Welcome, Random Citizen!!</h1>
+				<h1>Welcome, Random Nonprofit!!</h1>
 				<h3>Now Let's Change the World.</h3>
 			</div>
 		</center>
@@ -114,34 +114,18 @@ hub.<!DOCTYPE html>
 
     <div class="row name-input-row">
       <div class="col-md-4 col-md-offset-1">
-        <h3>What should we call you?</h3>
+        <h3>What is your Organization?</h3>
       </div>
       <div class="col-md-7">
-				{% if fName != null %}
-					<form id="nameForm" class="form-inline name-input-form">
-	          <div class="form-group">
-	            <label for="firstNameInput"></label>
-	            <input type="text" class="form-control" id="fname" value="{{fName}}" placeholder="First Name">
-	          </div>
-	          <div class="form-group">
-	            <label for="lastNameInput"></label>
-	            <input type="text" class="form-control" value="{{lName}}" id="lname" placeholder="Last Name">
-	          </div>
-	          	<a href="/api/developers/{{_id}}/name" class="btn btn-default">That's My Name!</a>
-	        </form>
-				{% else %}
-					<form id="nameForm" class="form-inline name-input-form">
-						<div class="form-group">
-							<label for="firstNameInput"></label>
-							<input type="text" class="form-control" id="fname" placeholder="First Name">
-						</div>
-						<div class="form-group">
-							<label for="lastNameInput"></label>
-							<input type="text" class="form-control" id="lname" placeholder="Last Name">
-						</div>
-							<a href="/api/developers/{{_id}}/name" class="btn btn-default">That's My Name!</a>
-					</form>
-				{% endif %}
+
+        <form id="nameForm" class="form-inline organization-input-form">
+          <div class="form-group">
+            <label for="organizationNameInput"></label>
+            <input type="text" class="form-control" id="organizationName" placeholder="Organization Name">
+          </div>
+
+          <a href="/api/nonprofits/{{_id}}/name" class="btn btn-default">That's Our Name!</a>
+        </form>
 
       </div>
 		</div>

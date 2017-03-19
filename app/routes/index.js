@@ -5,6 +5,8 @@ const token      = require('./../middleware/genToken');
 const auth       = require('./../config/auth.json');
 const AuthRoutes = require('./oauth');
 const UserRoutes = require('./users');
+const developers = require('./users/developers');
+const nonprofits = require('./users/nonprofits');
 const profile    = require('./profile');
 const JwtRoutes  = require('./token');
 const userInt    = require('../handlers/User');
@@ -14,6 +16,8 @@ const path       = require('path');
 routes.use('/api/greeting', greetings);
 routes.use('/api/secure/mail', mailDaemon);
 routes.use('/api/users', UserRoutes);
+routes.use('/api/developers', developers);
+routes.use('/api/nonprofits', nonprofits);
 routes.use('/oauth', AuthRoutes);
 routes.use('/', profile);
 // The actual generating of the token should be done when a user logs in or something.
@@ -40,7 +44,9 @@ routes.get('/:user', (req, res) => {
       return;
     }
     getData.getProfile(user.userId, function(err, user) {
-      res.status(200).json(user);
+      res.render('secure/profile-dev.twig', {
+        "profile": user
+      });
     });
   });
 });

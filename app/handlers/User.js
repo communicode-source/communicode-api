@@ -31,7 +31,7 @@ const mongoose = require('mongoose');
 *   Passport functions: Used with signing in or up users, don't call these por favor.
 **/
 class User {
-  
+
   constructor(req) {
     this.isLoggedIn = (req) ? (req.isAuthenticated()) ? true : false : false;
     this.user = (req) ? (req.user) ? req.user : false : false;
@@ -64,6 +64,140 @@ class User {
     });
   }
 
+  getUserAttributes(attributes, id, callback) {
+    var result = {};
+
+    if(!this.isLoggedIn) {
+      callback("No logged in user", null);
+    }
+
+    console.log(id);
+    userAttr.findOne({userId: id}, function(err, user) {
+
+      console.log(user);
+
+      if(err)
+        callback(err, null);
+
+      for(var i = 0; i < attributes.length; i++) {
+        result[attributes[i]] = user[attributes[i]];
+      }
+
+      callback(null, result);
+    });
+  }
+
+  /**
+   * Updates User Attributes
+   * @param attributes - object of attributes to update
+   * @param id - ID of user
+   * @param callback - Callback function
+  **/
+  updateUserAttribute(attributes, id, callback) {
+    if(!this.isLoggedIn) {
+      callback('No logged in user', null);
+    }
+
+    userAttr.findOne({userId: id}, function(err, user) {
+      if(err)
+        callback(err, null);
+
+      // Dynamically update user attribute
+      for(var attr in attributes) {
+        user[attr] = attributes[attr];
+      }
+
+      if(user.save())
+        callback(null, user);
+    });
+  }
+
+  /**
+   * Updates User Attributes
+   * @param data - object of attributes to update
+   * @param id - ID of user
+   * @param callback - Callback function
+  **/
+  updateNameAndUrl(data, id, callback) {
+    var modified = {};
+
+    if(!this.isLoggedIn) {
+      callback('No logged in user', null);
+    }
+
+    userAttr.findOne({userId: id}, function(err, user) {
+      if(err)
+        callback(err, null);
+
+      user.fName = data.fName;
+      user.lName = data.lName;
+      updateUrl(user);
+
+      if(user.fName !== null) {
+        modified.fName = null;
+      }
+
+      if(user.lName !== null) {
+        modified.lName = null;
+      }
+
+      if(user.url !== null) {
+        modified.url = null;
+      }
+
+
+      if(modified.url) {
+        process.nextTick(() => {
+          updateUrl(user);
+        });
+        modified['url'] = null;
+      } else {
+        user.save();
+      }
+
+      if(user.save())
+        callback(null, "Updated Successfully");
+    });
+  }
+
+  updateOrganizationAndUrl(data, id, callback) {
+    var modified = {};
+
+    if(!this.isLoggedIn) {
+      callback('No logged in user', null);
+    }
+
+    userAttr.findOne({userId: id}, function(err, user) {
+      if(err)
+        callback(err, null);
+
+      user.organizationName = data.organizationName;
+      user.url = data.organizationName.replace(/\s+/g, '').toLowerCase();
+
+      if(user.organizationName !== null) {
+        modified.organizationName = null;
+      }
+
+      if(user.url !== null) {
+        modified.url = null;
+      }
+
+
+      if(modified.url) {
+        process.nextTick(() => {
+          user.url = data.organizationName.replace(/\s+/g, '').toLowerCase();
+        });
+        modified['url'] = null;
+      } else {
+        user.save();
+      }
+
+      if(user.save())
+        callback(null, "Updated Successfully");
+    });
+
+  }
+
   updateData(id, req, functions, call) {
     let modified = {};
     if(!this.isLoggedIn) {
@@ -93,7 +227,6 @@ class User {
       }
       call(null, modified);
     });
-
   }
 
   getSessUser(param) {
@@ -124,33 +257,35 @@ class User {
       if(err){ // Return if there is an error.
         return done(err, null);
       }
+
       if(user) { // Return an existing user if there is one.
         return done(null, user);
       } else { // Make that new user.
-          let newUser = new getUser({
+        let newUser = new getUser({
           email: profile.email,
           providerID: profile.id,
           accountType: false,
           Provider: profile.provider,
           }
         );
-        newUser.save();
-        let hID = newUser._id;
-        let userA = new userAttr({
-          fName: profile.fname,
-          lName: profile.lname,
-          userId: hID,
-          url: null,
-          interests: [],
-          skills : []
+        newUser.save(function(err, results, rows) {
+          let hID = newUser._id;
+          let userA = new userAttr({
+            fName: profile.fname,
+            lName: profile.lname,
+            userId: hID,
+            url: null,
+            interests: [],
+            skills : []
+          });
+          process.nextTick(()=>{updateUrl(userA);});
+          return done(null, newUser);
         });
-        process.nextTick(()=>{updateUrl(userA);});
-        return done(null, newUser);
       }
     });
   }
 
-  passportCreateLocalUser(req, email, password, done) {
+  passportCreateLocalUser(req, email, password, accountType, done) {
     getUser.findOne({'email': email, 'Provider' : 'local'}, function(err, user) {
       if(err)
         return done(err);
@@ -160,7 +295,7 @@ class User {
         let newUser = new getUser();
         newUser.Provider = 'local';
         newUser.email = email;
-        newUser.accountType = false;
+        newUser.accountType = accountType;
         newUser.providerID = null;
         newUser.password = newUser.generateHash(password);
         newUser.save(function(err){
@@ -238,6 +373,7 @@ const defaultArrayUpdate = (user, val, key) => {
   }
   return false;
 };
+
 // Just a repeated function.
 const makeChanges = (dbVal, direction, input, tracker) => {
   // Loop through the values marked for change.

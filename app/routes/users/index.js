@@ -1,5 +1,6 @@
 const users = require('express').Router();
-const User = require('./../../handlers/User');
+const UserHandler = require('./../../handlers/User');
+const User = require('./../../models/User');
 
 users.route('/all')
   .get((req, res) => {
@@ -66,23 +67,9 @@ users.route('/update')
     uVal.updateData(uVal.getSessUser('_id'), req, [userVa, attrV], callback);
   });
 
-users.route('/update/:id/name')
-
-  .put((req, res) => {
-    User.findById(req.params.id, function(err, user) {
-      if(err)
-        res.status(500).json({"error": "Could not update"});
-
-      user.fname = req.body.fname;
-      user.lname = req.body.lname;
-      user.save();
-      res.status(200).json({"message": "Updated successfully"});
-    });
-  });
-
 users.route('/me')
   .get((req, res) => {
-    var t = new User(req);
+    var t = new UserHandler(req);
     t.getProfile(t.getSessUser('_id'), function(err, set) {
       if(err){
         res.status(200).json({err: true, msg: err});
@@ -95,7 +82,7 @@ users.route('/me')
   })
   users.route('/fake')
   .get((req, res) => {
-      var t = new User(req);
+      var t = new UserHandler(req);
       t.updateData(t.getSessUser('_id'), function(err, data){
         if(err){
           console.log("error %s", err);
@@ -107,7 +94,7 @@ users.route('/me')
   });
 users.route('/ff')
   .get((req, res) => {
-    var t = new User();
+    var t = new UserHandler();
     res.send(t.ff().toString());
   });
 
