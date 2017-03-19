@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="/css/home">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap">
+    <script src="/js/jquery"></script>
+  </head>
+  <style media="screen">
+    #results {
+      max-height: 400px;
+      overflow-y: scroll;
+    }
+  </style>
+  <body>
+    <div class="col-md-4">
+      <p id="loading">Loading...</p>
+      <p class="error" id="error" style="display: none"></p>
+      <ul id="changes" style="display: none">
+      </ul>
+      <center>
+        <button type="button" class="btn btn-default" name="button" id="updateProfile" style="display: none;">Update Profile!</button>
+      </center>
+      <form id="submit" style="display: none">
+        <div><label for="fName special">First name: </label>
+        <input class="update" type="text" name="fName" id="fname" value="" placeholder="First Name"></div>
+        <div><label for="lName special">Last name: </label>
+        <input class="update" type="text" name="lName" id="lname" value="" placeholder="Last Name"></div>
+        <div><label for="email special">Email: </label>
+        <input class="update" type="text" name="email" id="email" value="" placeholder="email"></div>
+        <div><label for="interests special">Interests: </label>
+        <input class="update" type="text" name="interests" id="interests" placeholder="Add interest"></div>
+        <div><label for="skills special">Skills: </label>
+        <input class="update" type="text" name="skills" id="skills" placeholder="Add skill"></div>
+        <center><button type="submit" class="btn btn-primary" name="button" id="submitUserData" style="">Submit!</button></center>
+      </form>
+      <center>
+        <button type="button" class="btn btn-warning" name="button" id="cancelUpdate" style="display: none; disabled: disabled;">Cancel</button>
+      </center>
+      <hr/>
+      <div id="data">
+      </div>
+    </div>
+    <div class="col-md-4 middle">
+      <p id="fetchLoading">Loading...</p>
+      <center><button type="button" class="btn btn-default" id="getUserProfile" name="button" style="display: none;">Fetch your user profile</button></center>
+      <div id="results"></div>
+      <hr/>
+    </div>
+    <div class="col-md-4">
+      <p id="otherLoading">Loading...</p>
+      <center><button type="button" class="btn btn-default" id="loadUser" name="button" style="display: none;">Get other user profile.</button></center>
+      <input type="text" name="" id="target" class="update" value="" style="display: none; width: 100%;" placeholder="User URL">
+      <div id="targetData" style="display: none;"></div>
+      <hr/>
+    </div>
+    <div class="col-md-12">
+      <center>
+        <p>Double click on database returned information to clear it.</p>
+        <a href="/oauth/logout" class="btn btn-danger">Logout</a>
+      </center>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  $( document ).ready(function() {
+    $( "#loading" ).hide();
+    $("#fetchLoading").hide();
+    $("#otherLoading").hide();
+    $(" #getUserProfile" ).show();
+    $("#updateProfile").show();
+    $("#loadUser").show();
+    $("#target").show();
+    $("#updateProfile").click(function(){
+      $("#cancelUpdate").show();
+      $("#cancelUpdate").removeAttr("disabled");
+      $("#loading").show();
+      $("#changes").empty();
+      $("#error").hide();
+      $.get("/api/users/update", function( data ) {
+        $( "#loading" ).hide();
+        $( "#updateProfile" ).hide();
+        $( "#submit" ).show();
+        if(data.err == true) {
+          $( "#errmsg" ).show().html(data.msg);
+        } else {
+          $( "#errmsg" ).hide();
+          $( "#fname" ).val(decodeEntities(data.fname));
+          $( "#lname" ).val(decodeEntities(data.lname));
+          $( "#email" ).val(decodeEntities(data.email));
+        };
+      });
+    });
+
+    $( "#submit" ).submit(function(e) {
+      e.preventDefault();
+      $("#loading").show();
+      $("#submitUserData").attr("disabled", "disabled");
+      var data = {
+        'email': $( "#email" ).val(),
+        'fName': $( "#fname" ).val(),
+        'lName': $( "#lname" ).val(),
+        'interests': $( "#interests" ).val(),
+        'skills': $( "#skills" ).val(),
+      };
+      $.ajax({
+        url: "/api/users/update",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: "POST",
+        success: function( info ) {
+          console.log(info);
+          if(info.err == true){
+            $( "#error" ).show().html(info.msg);
+          }
+          for(var key in info) {
+            if(key == 'err' || key == 'msg')
+              continue;
+            $( "#changes" ).show();
+            if(info[key] != null){
+              $( "#changes" ).append(
+                $('<li>').attr("id", "success").append(
+                  key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email")+' changed to <u>'+info[key]+'</u>'
+                )
+              )
+            } else {
+              $( "#changes" ).append(
+                  '<li>'+ key.replace("fName", "First name").replace("lName", "Last name").replace("email", "Email") + ' has been altered</li>'
+              )
+            }
+          };
+          $(this).find("input[type=text]").val("");
+          $("#submitUserData").removeAttr("disabled");
+          $( "#submit" ).hide();
+          $("#updateProfile").show();
+          $("#loading").hide();
+          $("#cancelUpdate").hide();
+        }
+      });
+    });
+    $("#loadUser").click(function() {
+      var url = $("#target").val();
+      $("#target").val("");
+      $.get("/"+url, function(user) {
+        document.getElementById("targetData").innerHTML = JSON.stringify(user, null, '<p>');
+        $("#targetData").show();
+        $("#target").hide();
+      });
+    });
+    $("#cancelUpdate").click(function() {
+      $("#cancelUpdate").attr("disabled", "disabled");
+      $("#interests").val("");
+      $("#loading").hide();
+      $("#changes").hide();
+      $("#cancelUpdate").hide();
+      $("#updateProfile").show();
+      $("#submit").hide();
+    });
+    $( "#getUserProfile" ).click(function() {
+      $("#results").show();
+      $( "#getUserProfile" ).attr("disabled", "disabled");
+      $.get("/api/users/me", function( data ) {
+        document.getElementById("results").innerHTML = JSON.stringify(data, null, '<p>');
+      });
+      $( "#getUserProfile" ).removeAttr("disabled");
+    });
+    $("#changes").dblclick(function(){
+      $(this).hide();
+    });
+    $("#results").dblclick(function(){
+      $(this).hide();
+    });
+    $("#targetData").dblclick(function() {
+      $(this).hide();
+      $("#target").show();
+    });
+    function decodeEntities(encodedString) {
+      var textArea = document.createElement('textarea');
+      textArea.innerHTML = encodedString;
+      return textArea.value;
+    };
+  });
+</script>

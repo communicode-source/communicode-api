@@ -1,0 +1,129 @@
+<div class="modal fade login" id="loginModal">
+    <div class="modal-dialog login animated">
+        <div class="modal-content">
+           <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                   <h4 class="modal-title">Login with</h4>
+               </div>
+               <div class="modal-body loginBox">
+                   <div class="box">
+                        <div class="content">
+
+                           <!-- SOCIAL FOR DEVS ONLY (RN) -->
+                           <div class="social">
+                               <a class="circle github" href="/oauth/github/login">
+                                   <i class="fa fa-github fa-fw"></i>
+                               </a>
+                               <a id="google_login" class="circle google" href="/oauth/google/login">
+                                   <i class="fa fa-google-plus fa-fw"></i>
+                               </a>
+                               <a id="facebook_login" class="circle facebook" href="/oauth/facebook/login">
+                                   <i class="fa fa-facebook fa-fw"></i>
+                               </a>
+                           </div>
+                           <div class="division">
+                               <div class="line l"></div>
+                                 <span>or</span>
+                               <div class="line r"></div>
+                           </div>
+                           <div class="error"></div>
+
+                         <!-- SINGULAR LOGIN -->
+                           <div class="form">
+                               <form method="post" action="/oauth/local/login" accept-charset="UTF-8">
+                               <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                               <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                               <!--<input class="btn btn-default btn-login" type="button" value="Login" onclick="loginAjax()">-->
+                               <input class="btn btn-default btn-login" type="submit" value="Login">
+                              </form>
+                           </div>
+                        </div>
+                   </div>
+                 </div>
+
+                 <div class="modal-body registerBox">
+                   <!-- REGISTRATION OPTION MODAL -->
+                   <div class="box">
+                       <div class="content" style="display:none;">
+                         <div class="row">
+
+                           <a href="javascript: showDevRegisterForm();">
+                             <div class="col-md-6 developers modal-panel">
+                               <h3>Developer</h3>
+                             </div>
+                           </a>
+
+                           <a href="javascript: showNonprofitRegisterForm();">
+                             <div class="col-md-6 nonprofits modal-panel">
+                               <h3>Nonprofit</h3>
+                             </div>
+                           </a>
+
+                         </div>
+                      </div>
+                   </div>
+                 </div>
+
+                 <div class="registerDeveloperBox modal-body">
+                   <!-- DEVELOPER REGISTRATION -->
+                   <div class="box">
+                       <div class="content" style="display:none;">
+                         <!-- SOCIAL FOR DEVS ONLY (RN) -->
+                         <div class="socialLoginArea">
+                           <div class="social">
+                               <a class="circle github" href="/oauth/github/login">
+                                   <i class="fa fa-github fa-fw"></i>
+                               </a>
+                               <a id="google_login" class="circle google" href="/oauth/google/login">
+                                   <i class="fa fa-google-plus fa-fw"></i>
+                               </a>
+                               <a id="facebook_login" class="circle facebook" href="/oauth/facebook/login">
+                                   <i class="fa fa-facebook fa-fw"></i>
+                               </a>
+                           </div>
+                           <div class="division">
+                               <div class="line l"></div>
+                                 <span>or</span>
+                               <div class="line r"></div>
+                           </div>
+                           <div class="error"></div>
+                        </div>
+
+                        <div class="form">
+                           <form id="registerForm" method="post" html="{:multipart=>true}" data-remote="true" action="/oauth/local/register/dev" accept-charset="UTF-8">
+                             <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                             <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                             <input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password_confirmation">
+                            
+                             <input type="submit" value="Let's Change the World" id="register-dev" class="btn btn-default btn-register" name="commit">
+                           </form>
+                        </div>
+                      </div>
+                   </div>
+                 </div>
+
+                 <div class="modal-body registerNonprofitBox">
+                   <!-- NONPROFIT REGISTRATION -->
+                   <div class="box">
+                       <div class="content" style="display:none;">
+                        <div class="form">
+                           <form id="registerForm" method="post" html="{:multipart=>true}" data-remote="true" action="/oauth/local/register/nonprofit" accept-charset="UTF-8">
+                             <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                             <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                             <input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password_confirmation">
+
+                             <input type="submit" value="Let's Change the World" id="register-dev" class="btn btn-default btn-register" name="commit">
+                           </form>
+                        </div>
+                      </div>
+                   </div>
+               </div>
+
+               <div class="modal-footer">
+                   <div class="forgot login-footer">
+                       <span id="modalFooterContent"></span>
+                   </div>
+               </div>
+        </div>
+    </div>
+</div>

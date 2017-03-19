@@ -1,0 +1,247 @@
+hub.<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>{{ title }}</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900" />
+
+	<!-- =========================
+         STYLESHEETS
+    ============================== -->
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+	<!-- WEB FONTS -->
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="/css/main.css" />
+	<link rel="stylesheet" href="/css/interests.css" />
+	<link rel="stylesheet" href="/css/interest-pictures.css" />
+</head>
+
+<body>
+
+	<nav>
+			<div class="container">
+
+					<ul class="left">
+					<li class="no-hover">
+				<a href="#" class="pull-left logo">
+					<img src="/Images/Logo/CLight.svg" />
+				</a>
+					</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-left left">
+						<li class="no-hover">
+				<a href="#">Explore</a>
+					</li>
+				</ul>
+
+					<div class="collapse navbar-collapse">
+							<ul class="nav navbar-nav navbar-right right">
+									<li>
+											<a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();" href="#">Matches</a>
+									</li>
+									<li class="dropdown">
+											<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i></a>
+											<ul class="dropdown-menu notification-dropdown">
+												<div class="row">
+													<li class="notification">
+														<div class="col-md-2">
+															<i class="fa fa-circle notification-unread" aria-hidden="true"></i>
+														</div>
+														<div class="col-md-10 notification-text">
+															<a href="/u/notifications#3145">Trevor Crupi followed you.</a>
+														</div>
+													</li>
+												</div>
+												<li role="separator" class="divider"></li>
+												<div class="row">
+													<li class="notification">
+														<div class="col-md-2">
+															<i class="fa fa-circle notification-unread" aria-hidden="true"></i>
+														</div>
+														<div class="col-md-10 notification-text">
+															<a href="/u/notifications#3145">Cooper Campbell followed you.</a>
+														</div>
+													</li>
+												</div>
+												<li role="separator" class="divider"></li>
+												<div class="row">
+													<li class="notification">
+														<div class="col-md-2">
+															<i class="fa fa-circle-o notification-read" aria-hidden="true"></i>
+														</div>
+														<div class="col-md-10 notification-text">
+															<a href="/u/notifications#3145">Sami Fassnaucht followed you.</a>
+														</div>
+													</li>
+												</div>
+											</ul>
+									</li>
+									<li class="dropdown">
+					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Trevor Crupi <span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+						            <li><a href="#">My Profile</a></li>
+												<li><a href="#">Dashboard</a></li>
+						            <li><a href="#">Settings</a></li>
+					            <li role="separator" class="divider"></li>
+					            	<li><a href="#">Explore</a></li>
+					            <li role="separator" class="divider"></li>
+					            	<li><a href="/oauth/logout">Log Out</a></li>
+					          </ul>
+					        </li>
+							</ul>
+					</div>
+			</div>
+	</nav>
+
+	<div class="container-fluid hero">
+		<center>
+			<div class="hero-text">
+				<h1>Welcome, Random Citizen!!</h1>
+				<h3>Now Let's Change the World.</h3>
+			</div>
+		</center>
+	</div>
+
+	<div class="container interests">
+
+    <div class="row name-input-row">
+      <div class="col-md-4 col-md-offset-1">
+        <h3>What should we call you?</h3>
+      </div>
+      <div class="col-md-7">
+				{% if fName != null %}
+					<form id="nameForm" class="form-inline name-input-form">
+	          <div class="form-group">
+	            <label for="firstNameInput"></label>
+	            <input type="text" class="form-control" id="fname" value="{{fName}}" placeholder="First Name">
+	          </div>
+	          <div class="form-group">
+	            <label for="lastNameInput"></label>
+	            <input type="text" class="form-control" value="{{lName}}" id="lname" placeholder="Last Name">
+	          </div>
+	          	<a href="/api/developers/{{_id}}/name" class="btn btn-default">That's My Name!</a>
+	        </form>
+				{% else %}
+					<form id="nameForm" class="form-inline name-input-form">
+						<div class="form-group">
+							<label for="firstNameInput"></label>
+							<input type="text" class="form-control" id="fname" placeholder="First Name">
+						</div>
+						<div class="form-group">
+							<label for="lastNameInput"></label>
+							<input type="text" class="form-control" id="lname" placeholder="Last Name">
+						</div>
+							<a href="/api/developers/{{_id}}/name" class="btn btn-default">That's My Name!</a>
+					</form>
+				{% endif %}
+
+      </div>
+		</div>
+		<div class="row interest-input-row">
+      <div class="col-md-11 col-md-offset-1">
+        <h4>Pick some things you're interested in helping with: </h4>
+      </div>
+		</div>
+	</div>
+
+	<div class="container-fluid interests">
+		<div class="row interest-row">
+			<div id="environment" class="col-md-6 interest-picture">
+				<h3>Environment</h3>
+			</div>
+			<div id="science" class="col-md-6 interest-picture">
+				<h3>Science and Technology</h3>
+			</div>
+		</div>
+
+		<div class="row interest-row">
+			<div id="wildlife" class="col-md-6 interest-picture">
+				<h3>Wildlife</h3>
+			</div>
+			<div id="preservation" class="col-md-6 interest-picture">
+				<h3>Preservation</h3>
+			</div>
+		</div>
+
+		<div class="row interest-row">
+			<div id="humanservices" class="col-md-6 interest-picture">
+				<h3>Human Services</h3>
+			</div>
+			<div id="civilrights" class="col-md-6 interest-picture">
+				<h3>Civil Rights</h3>
+			</div>
+		</div>
+
+		<div class="row interest-row">
+			<div id="artsandculture" class="col-md-6 interest-picture">
+				<h3>Arts and Culture</h3>
+			</div>
+			<div id="education" class="col-md-6 interest-picture">
+				<h3>Education</h3>
+			</div>
+		</div>
+
+	</div>
+
+	<footer>
+		<div class="container">
+			<div class="row">
+
+				<div class="col-xs-4 col-sm-2">
+					<img id="icon" src="/Images/Logo/C.svg">
+					<Images>
+				</div>
+
+				<div class="col-xs-12 col-sm-6 hidden-xs">
+					<h6 class="copyright">©2015 Communicode</h6>
+				</div>
+
+				<div class="col-xs-4 col-sm-2">
+					<ul>
+						<li>
+							<h6><a href="#">Log In</a></h6></li>
+						<li>
+							<h6><a href="#">Register</a></h6></li>
+						<li>
+							<h6><a href="#">About Us</a></h6></li>
+						<li>
+							<h6><a href="#">FAQs</a></h6></li>
+					</ul>
+				</div>
+				<div class="col-xs-4 col-sm-2">
+					<ul>
+						<li>
+							<h6><a href="#">Contact</a></h6></li>
+						<li>
+							<h6><a href="#">Sitemap</a></h6></li>
+						<li>
+							<h6><a href="#">Terms of Use</a></h6></li>
+						<li>
+							<h6><a href="#">Privacy Policy</a></h6></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+		<a href="http://localhost:3001/developers/{{_id}}/interests" class="submit-interests btn primary-btn">Start Working <i class="fa fa-arrow-right" aria-hidden-"true"></i></a>
+	</footer>
+
+	<!--
+      Currently nonexistent Javascript would go here.
+      We'll probably jst Gulp this ish.
+    -->
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/interests.js"></script>
+</body>
+
+</html>

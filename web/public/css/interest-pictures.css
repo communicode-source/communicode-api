@@ -1,0 +1,64 @@
+#environment {
+	background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1417144527634-653e3dec77b2?dpr=1&auto=format&fit=crop&w=1500&h=970&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background 1000ms; /* For Safari 3.1 to 6.0 */
+	transition: background 1000ms;
+}
+#environment:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1417144527634-653e3dec77b2?dpr=1&auto=format&fit=crop&w=1500&h=970&q=80&cs=tinysrgb&crop='); }
+#environment.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1417144527634-653e3dec77b2?dpr=1&auto=format&fit=crop&w=1500&h=970&q=80&cs=tinysrgb&crop='); }
+
+#science {
+	background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?dpr=1&auto=format&fit=crop&w=1500&h=998&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#science:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?dpr=1&auto=format&fit=crop&w=1500&h=998&q=80&cs=tinysrgb&crop='); }
+#science.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?dpr=1&auto=format&fit=crop&w=1500&h=998&q=80&cs=tinysrgb&crop='); }
+
+#wildlife {
+  background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1444464666168-49d633b86797?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#wildlife:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1444464666168-49d633b86797?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop='); }
+#wildlife.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1444464666168-49d633b86797?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop='); }
+
+#preservation {
+  background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1446685160726-504685f66413?dpr=1&auto=format&fit=crop&w=1500&h=844&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#preservation:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1446685160726-504685f66413?dpr=1&auto=format&fit=crop&w=1500&h=844&q=80&cs=tinysrgb&crop='); }
+#preservation.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1446685160726-504685f66413?dpr=1&auto=format&fit=crop&w=1500&h=844&q=80&cs=tinysrgb&crop='); }
+
+#artsandculture {
+	background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/uploads/14114200676400596f2f6/a50d578a?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#artsandculture:hover  { 	background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/uploads/14114200676400596f2f6/a50d578a?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop='); }
+#artsandculture.chosen { 	background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/uploads/14114200676400596f2f6/a50d578a?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop='); }
+
+#education {
+	background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1453733190371-0a9bedd82893?dpr=1&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#education:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1453733190371-0a9bedd82893?dpr=1&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop='); }
+#education.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1453733190371-0a9bedd82893?dpr=1&auto=format&fit=crop&w=1500&h=1125&q=80&cs=tinysrgb&crop='); }
+
+#humanservices {
+	background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1485182317254-4d42489e041b?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#humanservices:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1485182317254-4d42489e041b?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop='); }
+#humanservices.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1485182317254-4d42489e041b?dpr=1&auto=format&fit=crop&w=1500&h=1001&q=80&cs=tinysrgb&crop='); }
+
+
+#civilrights {
+	background: linear-gradient(rgba(51, 51, 51, 0.4), rgba(51, 51, 51, 0.4)), url('https://images.unsplash.com/photo-1485331788488-bfcf4d0b6e12?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop=');
+	-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+	transition: background .5s;
+}
+#civilrights:hover  { background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url('https://images.unsplash.com/photo-1485331788488-bfcf4d0b6e12?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop='); }
+#civilrights.chosen { background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1485331788488-bfcf4d0b6e12?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop='); }

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ title }}</title>
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900"/>
+
+    <!-- =========================
+         STYLESHEETS
+    ============================== -->
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- WEB FONTS -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  	<link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/home.css"/>
+</head>
+
+	<body>
+
+    <nav>
+        <div class="container">
+
+            <ul class="left">
+            <li class="no-hover">
+          <a href="#" class="pull-left logo">
+            <img src="Images/Logo/CLight.svg" />
+          </a>
+            </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-left left">
+              <li class="no-hover">
+          <a href="#">Explore</a>
+            </li>
+          </ul>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right right">
+                    <li>
+                        <a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();" href="#">Login</a>
+                    </li>
+                    <li>
+                        <a data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();" href="#">Sign Up</a>
+                    </li>
+                    <li>
+                        <a href="#">Create a Project</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        {% include 'layouts/register-login.twig' %}
+
+    </nav>
+
+    <div class="container-fluid hero">
+      <center>
+        <div class="hero-text">
+            <h1>Let's Create Together.</h1>
+            <h3>Help change the world through the power of technology</h3>
+            <a href="#" class="primary-btn btn">Developers</a>
+            <a href="#" class="dark-btn btn">Nonprofits</a>
+          </div>
+        </center>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 divider">
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 developers info-panel">
+          <div class="info-text">
+            <h2>Developers</h2>
+            <hr />
+            <p>Communicode matches designers and developers to causes they care about.</p>
+            <center>
+              <a href="#" class="primary-btn btn-small dark no-transition">Learn More</a>
+            </center>
+          </div>
+        </div>
+        <div class="col-md-6 nonprofits info-panel">
+          <div class="info-text">
+            <h2>Nonprofits</h2>
+            <hr />
+            <p>Communicode helps usher your nonprofit into the 21<sup>st</sup> Century</p>
+            <center>
+              <a href="#" class="primary-btn btn-small dark no-transition">Learn More</a>
+            </center>
+          </div>
+        </div>
+      </div>
+      <div class="row unified-section">
+        <div class="col-md-6">
+          <img width="100%" src="Images/Homepage/TripleBrowsers.png" />
+        </div>
+        <div class="col-md-6 text">
+          <h2>We're Creating a Revolution</h2>
+          <p>Help do something that makes a real-world difference. Communicode will match you with causes you care about. Save job requests you are interested in and make a difference with the skills you have.</p>
+          <a href="#" class="dark-btn btn no-transition">Join the Revolution</a>
+        </div>
+      </div>
+      <div class="row features" >
+        <div id="portfolio-panel" class="col-md-4 info-panel">
+          <h3>Expand Your Portfolio</h3>
+          <hr />
+          <p>
+            Need a few more projects to create a portfolio? Communicode
+            gives you the opportunity to expand your portfolio, completely free.
+          </p>
+        </div>
+        <div id="work-panel" class="col-md-4 info-panel">
+          <h3>Work on What You Love</h3>
+          <hr />
+          <p>
+            Communicode allows you to work on causes you are interested in.
+            You give us your interests, we give you matches. It's that simple.
+          </p>
+        </div>
+        <div id="help-panel" class="col-md-4 info-panel">
+          <h3>Get the Help You Deserve</h3>
+          <hr />
+          <p>
+            Nonprofits need to be up to date with technology.
+            Communicode matches you with people who care about
+            what you have to offer.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-12 create-account">
+        <center>
+          <div class="text">
+            <h2>Let's Code Some Good</h2>
+            <h4>Help change the world. Create your account now.</h4>
+            <a href="#" class="btn dark-btn">Get Started</a>
+          </div>
+        </center>
+      </div>
+    </div>
+
+    <div class="overlay overlay-slidedown container-fluid">
+        <div class="row overlay-body">
+            <button type="button" class="overlay-close">Close</button>
+            <a href="register">
+                <div class="col-md-6 register-half" id="developers">
+                    <div class="register-text">
+                        <h4>ARE YOU A</h4>
+                        <h2>Developer?</h2>
+                    </div>
+                </div>
+            </a>
+
+            <a href="register">
+                <div class="col-md-6 register-half" id="nonprofits">
+                    <div class="register-text">
+                        <h4>ARE YOU A</h4>
+                        <h2>Nonprofit?</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container"><div class="row">
+
+            <div class="col-xs-4 col-sm-2">
+                <img id="icon" src="Images/Logo/C.svg"><Images>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 hidden-xs">
+                <h6 class="copyright">©2015 Communicode</h6>
+            </div>
+
+            <div class="col-xs-4 col-sm-2">
+                <ul>
+                    <li><h6><a href="#">Log In</a></h6></li>
+                    <li><h6><a href="#">Register</a></h6></li>
+                    <li><h6><a href="#">About Us</a></h6></li>
+                    <li><h6><a href="#">FAQs</a></h6></li>
+                </ul>
+            </div>
+            <div class="col-xs-4 col-sm-2">
+                <ul>
+                    <li><h6><a href="#">Contact</a></h6></li>
+                    <li><h6><a href="#">Sitemap</a></h6></li>
+                    <li><h6><a href="#">Terms of Use</a></h6></li>
+                    <li><h6><a href="#">Privacy Policy</a></h6></li>
+                </ul>
+            </div>
+
+        </div></div>
+    </footer>
+
+    <!--
+      Currently nonexistent Javascript would go here.
+      We'll probably jst Gulp this ish.
+    -->
+    <script src="js/GLOBAL.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+    /*
+     *
+     * login-register modal
+     * Autor: Creative Tim
+     * Web-autor: creative.tim
+     * Web script: http://creative-tim.com
+     *
+     */
+    function showRegisterForm(){
+        $('.loginBox').hide();
+        $('.registerDeveloperBox').hide();
+        $('.registerNonprofitBox').hide();
+
+        $('.registerBox').fadeIn('fast');
+        $('.modal-dialog').animate({width: '500'}, 'fast', function() {
+          $('.registerBox .content').fadeIn('fast');
+          $('#modalFooterContent').html("Have an account? " + "<a href='javascript: showLoginForm()'>Login</a>");
+          $('.modal-title').html("<center style='font-style: italic;'>I'm a...</center>");
+        });
+
+        $('.error').removeClass('alert alert-danger').html('');
+    }
+
+    function showDevRegisterForm(){
+      $('.registerBox').hide();
+
+      $('.registerDeveloperBox').fadeIn('fast');
+      $('.modal-dialog').animate({width: '400'}, 'fast', function() {
+        $('.registerDeveloperBox .content').fadeIn('fast');
+        $('.modal-title').html('<center>Register</center>');
+        $('#modalFooterContent').html("Have an account? " + "<a href='javascript: showLoginForm()'>Login</a>");
+      });
+
+      $('.error').removeClass('alert alert-danger').html('');
+    }
+
+    function showNonprofitRegisterForm(){
+      $('.registerBox').hide();
+
+      $('.registerNonprofitBox').fadeIn('fast');
+      $('.modal-dialog').animate({width: '400'}, 'fast', function() {
+        $('.registerNonprofitBox .content').fadeIn('fast');
+        $('.modal-title').html('<center>Register</center>');
+        $('#modalFooterContent').html("Have an account? " + "<a href='javascript: showLoginForm()'>Login</a>");
+      });
+
+      $('.error').removeClass('alert alert-danger').html('');
+    }
+
+
+    function showLoginForm(){
+      console.log($_.apiDomain);
+      console.log("lsdfhksldkfjsldkfjlskdjf");
+        $('.registerBox').hide();
+        $('.registerDeveloperBox').hide();
+        $('.registerNonprofitBox').hide();
+
+        $('.loginBox').fadeIn('fast');
+        $('.modal-dialog').animate({width: '400'}, 'fast', function() {
+          $('.modal-title').html('<center>Login</center>');
+          $('#modalFooterContent').html("Need to Create an Account? " + "<a href='javascript: showRegisterForm()'>Create</a>");
+        });
+
+        $('.error').removeClass('alert alert-danger').html('');
+    }
+
+    function openLoginModal(){
+        showLoginForm();
+        setTimeout(function(){
+            $('#loginModal').modal('show');
+        }, 230);
+
+    }
+    function openRegisterModal(){
+        showRegisterForm();
+        setTimeout(function(){
+            $('#loginModal').modal('show');
+        }, 230);
+
+    }
+
+    function loginAjax(){
+        /*   Remove this comments when moving to server
+        $.post( "/oauth/local/login", function( data ) {
+                if(data == 1){
+                    window.location.replace("/home");
+                } else {
+                     shakeModal();
+                }
+        });*/
+
+    /*   Simulate error message from the server   */
+         shakeModal();
+    }
+
+    function shakeModal(){
+        $('#loginModal .modal-dialog').addClass('shake');
+                 $('.error').addClass('alert alert-danger').html("Invalid email/password combination");
+                 $('input[type="password"]').val('');
+                 setTimeout( function(){
+                    $('#loginModal .modal-dialog').removeClass('shake');
+        }, 1000 );
+    }
+
+    </script>
+	</body>
+</html>

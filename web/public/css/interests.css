@@ -1,0 +1,459 @@
+/* We could do a cool paralax here instead */
+
+.hero {
+	background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url(https://images.unsplash.com/photo-1483314871235-d07be7fd55e2?dpr=1&auto=format&fit=crop&w=1500&h=1000&q=80&cs=tinysrgb&crop=) no-repeat center center fixed;
+	height: 450px;
+	width: 100%;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.hero-text {
+	max-width: 1200px;
+	width: 100%;
+	padding: 150px;
+}
+.hero h1 {
+	color: #F2F2F2;
+	font-size: 60px;
+	letter-spacing: -1px;
+	line-height: 1;
+	margin-bottom: 0;
+	text-align: center;
+}
+.hero h3 {
+	font-size: 23px;
+	color: #F2F2F2;
+	text-align: center;
+	line-height: 1;
+	margin-bottom: 30px;
+}
+
+/* NEW ABOUT STYLING -- ABOUT 1 */
+
+.interests {
+	margin-top: 75px;
+	margin-bottom: 75px;
+  margin-left: auto;
+	margin-right: auto;
+}
+.interests .name-input-form {
+  margin-top: 10px;
+}
+
+.interests .interest-input-row {
+  margin-top: 50px;
+}
+
+.interest-picture {
+	height: 450px;
+	text-align: center;
+	background-position: center center !important;
+	-moz-box-shadow:    inset 0 0 5px #333;
+	-webkit-box-shadow: inset 0 0 5px #333;
+	box-shadow:         inset 0 0 5px #333;
+}
+
+.interest-picture.chosen {
+	-moz-box-shadow:    inset 0 0 10px #333 !important;
+	-webkit-box-shadow: inset 0 0 10px #333 !important;
+	box-shadow:         inset 0 0 10px #333 !important;
+}
+
+.interest-picture h3 {
+	color: #F2F2F2;
+	padding: 200px;
+}
+
+.interest-picture h3.checked {
+	font-size: 150px;
+	padding: 125px;
+	font-weight: 200;
+}
+
+/* END NEW */
+
+.fill {
+	width: 100%;
+	height: 350px;
+	background-position: center;
+	background-size: cover;
+}
+.info-panel h2 {
+	font-size: 28px;
+	font-family: "Montserrat", sans-serif;
+	color: #F2F2F2;
+	text-transform: uppercase;
+}
+.info-panel hr {
+	width: 25px;
+	text-align: center;
+	border-width: 2px;
+}
+.info-panel p {
+	color: #F2F2F2;
+	text-align: center;
+	margin-bottom: 30px;
+}
+.info-text {
+	max-width: 50%;
+	margin: 0 auto;
+	padding-top: 100px;
+	padding-bottom: 100px;
+}
+.developers {
+	background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url(images/Backgrounds/pinetree.jpeg);
+	background-size: cover;
+	background-position-x: center;
+	border-right: 2px solid #F2F2F2;
+}
+.nonprofits {
+	background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url(https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=e99246a59a35be751528c9e66c8b07e9);
+	background-size: cover;
+	background-position-x: center;
+}
+.unified-section {
+	background: #F2F2F2;
+	padding: 100px 50px;
+}
+.unified-section h2 {
+	font-size: 28px;
+	font-family: "Montserrat", sans-serif;
+	text-align: left;
+	color: #333;
+}
+.unified-section p {
+	font-size: 14px;
+	line-height: 1.5;
+}
+.unified-section .text {
+	padding-left: 30px;
+}
+.features h3 {
+	font-size: 20px;
+	font-family: "Montserrat", sans-serif;
+	color: #F2F2F2;
+	text-transform: uppercase;
+	text-align: center;
+}
+.features p {
+	line-height: 1.5;
+}
+.features .info-panel {
+	padding: 50px;
+}
+#portfolio-panel {
+	background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url(Images/Backgrounds/citygrayscale.jpg);
+	background-size: cover;
+	background-position-x: center;
+}
+#work-panel {
+	background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url(Images/Backgrounds/animals.jpe);
+	background-size: cover;
+	background-position-x: center;
+}
+#help-panel {
+	background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url(Images/Backgrounds/night-square.jpg);
+	background-size: cover;
+	background-position-x: center;
+}
+.create-account {
+	padding: 50px 0px;
+}
+.create-account h4 {
+	padding: 10px 0px;
+}
+.create-account .text {
+	max-width: 600px;
+}
+.features img {
+	max-width: 100%;
+	-moz-transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.features:hover img {
+	-moz-transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	transform: scale(1.1);
+}
+
+/* Large desktop
+    @media (min-width: 1200px) { ... }
+
+    @media (min-width: 768px) and (max-width: 979px) { ... }
+
+    @media (max-width: 767px) { ... }*/
+
+
+/* Landscape phones and down */
+
+@media (max-width: 480px) {
+	.hero-text {
+		margin-top: 100px;
+	}
+}
+
+/* Overlay style */
+
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: #333;
+}
+
+/* Overlay closing cross */
+
+.overlay .overlay-close {
+	width: 80px;
+	height: 80px;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	overflow: hidden;
+	border: none;
+	background: url(..Images/cross.png) no-repeat center center;
+	text-indent: 200%;
+	color: transparent;
+	outline: none;
+	z-index: 1000;
+}
+.overlay-body {
+	margin-top: 50px;
+}
+
+/* Menu style */
+
+.overlay nav {
+	text-align: center;
+	position: relative;
+	top: 50%;
+	height: 60%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+.overlay ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 auto;
+	display: inline-block;
+	height: 100%;
+	position: relative;
+}
+.overlay ul li {
+	display: block;
+	height: 20%;
+	height: calc(100% / 5);
+	min-height: 54px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.overlay ul li a {
+	font-size: 54px;
+	font-weight: 300;
+	display: block;
+	color: #fff;
+	-webkit-transition: color 0.2s;
+	transition: color 0.2s;
+}
+.overlay ul li a:hover,
+.overlay ul li a:focus {
+	color: #e3fcb1;
+}
+
+/* Effects */
+
+.overlay-slidedown {
+	visibility: hidden;
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+	-webkit-transition: -webkit-transform 0.4s ease-in-out, visibility 0s 0.4s;
+	transition: transform 0.4s ease-in-out, visibility 0s 0.4s;
+}
+.overlay-slidedown.open {
+	visibility: visible;
+	-webkit-transform: translateY(0%);
+	transform: translateY(0%);
+	-webkit-transition: -webkit-transform 0.4s ease-in-out;
+	transition: transform 0.4s ease-in-out;
+}
+@media screen and (max-height: 30.5em) {
+	.overlay nav {
+		height: 70%;
+		font-size: 34px;
+	}
+	.overlay ul li {
+		min-height: 34px;
+	}
+}
+#developers {
+	height: 100%;
+	height: 100vh;
+	background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url(images/Homepage/DeveloperMan.png), url(stylesheets/images/Homepage/DeveloperBackground.png);
+	background-color: #e4e3e1;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: 100%;
+}
+#nonprofits {
+	height: 100%;
+	height: 100vh;
+	min-height: 500px;
+	background: linear-gradient(rgba(51, 51, 51, 0.6), rgba(51, 51, 51, 0.6)), url(/images/Homepage/NonprofitGirl.png), url(images/Homepage/NonprofitBackground.png);
+	background-color: #333333;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+.register-half h2 {
+	color: #f2f2f2;
+	font-size: 36px;
+}
+.register-half h4 {
+	font-family: "Georgia", sans-serif;
+	text-align: center;
+	color: #ffb42e;
+	font-size: 18px;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	font-weight: bold;
+	font-style: italic;
+}
+.register-half p {
+	color: #F2F2F2;
+	margin: 5px 20px;
+	font-size: 16px;
+	letter-spacing: .5px;
+}
+.display-none {
+	display: none !important;
+}
+.emphasis-text {
+	font-style: italic;
+	font-weight: bold;
+	font-family: "Georgia", sans-serif;
+	letter-spacing: 3px;
+	color: #ffb42e;
+}
+legend {
+	display: block;
+	width: 70%;
+	padding: 10px 0px;
+	margin-bottom: 20px;
+	margin: 20px;
+	font-size: 21px;
+	line-height: inherit;
+	border: 0;
+	color: #F2F2F2;
+	border-bottom: 1px solid #e5e5e5;
+}
+.spacer {
+	letter-spacing: 2px;
+}
+.fade-transition {
+	-webkit-animation: fadein 1.5s;
+	/* Safari, Chrome and Opera > 12.1 */
+	-moz-animation: fadein 1.5s;
+	/* Firefox < 16 */
+	-ms-animation: fadein 1.5s;
+	/* Internet Explorer */
+	-o-animation: fadein 1.5s;
+	/* Opera < 12.1 */
+	animation: fadein 1.5s;
+}
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Firefox < 16 */
+
+@-moz-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+
+@-webkit-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Internet Explorer */
+
+@-ms-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Opera < 12.1 */
+
+@-o-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.register-input {
+	width: 90%;
+	border: none;
+	background-color: transparent;
+	height: 45px;
+	padding: 10px;
+	border: 0;
+	border-bottom: 1px solid #e6e6e6;
+	margin: 20px;
+	color: #f2f2f2;
+	-webkit-transition: border-bottom-color .5s;
+	transition: border-bottom-color .5s;
+	transition-timing-function: linear;
+}
+
+.register-input:focus {
+	background: transparent;
+	outline: 0;
+	border-bottom-color: #ffb42e;
+}
+
+.register-form button {
+	margin: 20px;
+	width: 90%;
+	color: #333;
+}
+
+.submit-interests {
+	position: fixed;
+	bottom: 2em;
+	right: -20em;
+	padding: 15px 50px;
+	margin-right: 20px;
+}
+
+/*
+TO DO
+-- SHOULD THE NAV ANIMATION (REGISTER, DIRECTLY ABOVE HERE) BE IN MAIN?
+-- IS THE HERO H1/H3 DIFFERENT FROM THE STANDARD H1/H3? WHY?
+*/

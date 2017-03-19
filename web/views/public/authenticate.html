@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login and Register</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap">
+  </head>
+  <body style="margin-left: 5px;">
+    <div id="fb-root"></div>
+    <script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=164246817399322";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <a href="/oauth/facebook/login" class="btn btn-primary">Use Facebook to login or signup</a> <br/>
+    <!--<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false"></div><br/>-->
+    <a href="/oauth/github/login" class="btn btn-warning">Use Github to login or signup</a><br/>
+    <a href="/oauth/google/login" class="btn btn-primary">Use Google to login or signup</a> <br/>
+    <a href="/api/users/all" class="btn btn-default">All users</a><br/>
+    <a href="/oauth/profile" class="btn btn-default">Profile</a><span id="smallNote">*</span><br/>
+    <a href="/tokenme" class="btn btn-default">Get a token</a><span id="smallNote">*</span><br/>
+    <p id="smallNote">* Must be logged in</p>
+    <h2>Local Login and Registration</h2>
+    <hr>
+    <b>Register</b>
+    <form class="" action="/oauth/local/register" method="post">
+      <input type="text" name="email" value="" placeholder="Email"></input>
+      <input type="password" name="password" value="" placeholder="Password"></input>
+      <input type="text" name="fname" value="" placeholder="First name or Organization"></input>
+      <input type="text" name="lname" value="" placeholder="Last name"></input><span id="smallNote">*</span>
+      <button type="submit" class="btn btn-default" name="button">Submit</button>
+    </form>
+    <p id="smallNote">* If you are a nonprofit, use the first name for the name of your organization and the last name blank</p>
+    <hr>
+    <b>Login</b>
+    <form class="" action="/oauth/local/login" method="post">
+      <input type="text" name="email" value="" placeholder="Email"></input>
+      <input type="password" name="password" value="" placeholder="Password"></input>
+      <button type="submit" class="btn btn-default" name="button">Submit</button>
+    </form>
+    <hr>
+    <br/>
+    <a href="/public" class="btn btn-primary">Go back home</a>
+  </body>
+</html>
