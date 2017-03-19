@@ -1,3 +1,4 @@
 /node_modules
 /app/config/auth.json
+/api/app/config/auth.json
 archive.js

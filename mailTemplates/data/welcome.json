@@ -1,9 +1,0 @@
-{
-  "mutable": {
-    "user": null,
-    "msg": null
-  },
-  "static": {
-    "subject": "Welcome {{user}}"
-  }
-}
