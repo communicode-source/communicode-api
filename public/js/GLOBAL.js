@@ -1,5 +1,5 @@
 var $_ = {
-  type: 'http://'
+  type: 'http://',
   apiDomain: 'localhost:3001',
   homeDomain: 'localhost:3000'
 };
