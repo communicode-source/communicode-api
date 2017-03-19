@@ -13,6 +13,7 @@ routes.use('/api/secure/mail', mailDaemon);
 // Just a test route I created.
 routes.use('/api/secure/test', test);
 routes.use('/api/users', UserRoutes);
+routes.use('/api/projects', projects);
 // Login/Logout routes and temporary profile route.
 routes.use('/oauth', AuthRoutes);
 
