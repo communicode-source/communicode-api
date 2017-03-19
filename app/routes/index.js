@@ -6,6 +6,7 @@ const token      = require('./../middleware/genToken');
 const auth       = require('./../config/auth.json');
 const AuthRoutes = require('./oauth');
 const UserRoutes = require('./users');
+const projects = require('./projects');
 // Telling express what route goes to this greeting.
 routes.use('/api/greeting', greetings);
 // The mailing API route.
