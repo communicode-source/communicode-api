@@ -5,7 +5,6 @@ const token      = require('./../middleware/genToken');
 const auth       = require('./../config/auth.json');
 const AuthRoutes = require('./oauth');
 const UserRoutes = require('./users');
-
 const developers = require('./users/developers');
 const nonprofits = require('./users/nonprofits');
 const profile    = require('./profile');
@@ -21,7 +20,6 @@ routes.use('/api/developers', developers);
 routes.use('/api/nonprofits', nonprofits);
 routes.use('/oauth', AuthRoutes);
 routes.use('/', profile);
-
 // The actual generating of the token should be done when a user logs in or something.
 routes.use('/api/token', JwtRoutes);
 
