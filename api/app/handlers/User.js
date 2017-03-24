@@ -33,8 +33,8 @@ const mongoose = require('mongoose');
 class User {
 
   constructor(req) {
-    this.isLoggedIn = (req) ? (req.isAuthenticated()) ? true : false : false;
-    this.user = (req) ? (req.user) ? req.user : false : false;
+    this.isLoggedIn = false;
+    this.user = false;
   }
 
   returnAll(call) {

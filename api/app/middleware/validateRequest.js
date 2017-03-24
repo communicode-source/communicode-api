@@ -20,14 +20,7 @@ module.exports = function(req, res, next) {
         res.status(200).json({err: true, msg: "Expired token."});
         return;
       }
-      // More user authentication needs to happen here.
-      user = (decode.id == new User(req).getSessUser('_id')) ? true : false; 
-      // If user is false then return error.
-      if(!user) {
-        res.status(200).json({err: true, msg: "Invalid user"});
-      } else { // If it gets here then it passed validation.
-        next(); // This is if the validation is successful, the user and token should match.
-      }
+      next();
     } catch(err) { //Only if JWT decides not to work or something.
       res.status(200).json({err: true, msg: "Invalid token."});
     }
