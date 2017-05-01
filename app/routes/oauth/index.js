@@ -56,7 +56,7 @@ oAuth.route('/local/login') // Login Route.
 //==============================================================================
 oAuth.route('/profile')
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
-    res.render("secure/profile.twig", {
+    res.render("secure/profile-dev.twig", {
       "title": "Profile"
     });
   });

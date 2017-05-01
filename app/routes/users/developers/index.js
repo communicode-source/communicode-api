@@ -36,7 +36,7 @@ users.route('/:id/name')
       if(err)
         res.json({"error": err});
 
-      Developer = new UserHandler(req);
+      Developer = req._userClass;
 
       Developer.updateNameAndUrl({
         fName: req.body.sanitized.fname,
@@ -57,7 +57,7 @@ users.route('/:id/interests')
       if(err)
         res.json({"error": err});
 
-      Developer = new UserHandler(req);
+      Developer = req._userClass;
 
       Developer.updateUserAttribute({
         interests: req.body.sanitized.interests.split(",")

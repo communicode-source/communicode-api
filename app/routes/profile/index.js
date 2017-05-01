@@ -5,13 +5,11 @@
 **/
 const profile = require('express').Router();
 
-var Handler = require('./../../handlers/User');
-
 profile.route('/register/step.2')
 
   .get(require('./../../middleware/userLogin').isLoggedIn, (req, res) => {
 
-    var UserHandler = new Handler(req);
+    var UserHandler = req._userClass;
     var id = UserHandler.getSessUser("_id");
     if(!UserHandler.getSessUser('accountType')) {
       UserHandler.getUserAttributes(["fName", "lName"], id, function(err, result) {

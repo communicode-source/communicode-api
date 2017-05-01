@@ -6,6 +6,8 @@ const auth              = require('./auth.json'); // Super secret sauces.
 var User                = require('./../models/User'); // User model.
 const newUserEmail      = require('./../middleware/email').newUserEmail;
 const token             = require('./../middleware/genToken').returnKeytoken;
+const t                 = require('./../handlers/User');
+const UserModel         = new t();
 
 // Repeated function for finding the user in the database.
 const findOrCreateUser = function(profile, done) {
@@ -19,7 +21,6 @@ const findOrCreateUser = function(profile, done) {
       return done(err, null);
     }
     if(user){ // Return an existing user if there is one.
-      console.log(user);
       return done(null, user);
     } else { // Make that new user.
       newUser = new User({
@@ -91,8 +92,6 @@ const logInCurrentUser = function(email, password, done) {
   });
 }
 
-const t                 = require('./../handlers/User');
-const UserModel         = new t({isAuthenticated: function() {return false;}});
 
 // Initialize with the passport instance to configure passport to run properly.
 module.exports = function(passport) {

@@ -32,7 +32,7 @@ users.route('/:id/name')
       if(err)
         res.json({"error": err});
 
-      Nonprofit = new UserHandler(req);
+      Nonprofit = req._userClass;
 
       Nonprofit.updateOrganizationAndUrl({
         organizationName: req.body.sanitized.organizationName
@@ -52,7 +52,7 @@ users.route('/:id/interests')
       if(err)
         res.json({"error": err});
 
-      Nonprofit = new UserHandler(req);
+      Nonprofit = req._userClass;
 
       Nonprofit.updateUserAttribute({
         interests: req.body.sanitized.interests.split(",")

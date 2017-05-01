@@ -8,12 +8,12 @@ const generate = req => generateToken(req);
 
 // Makes the token.
 function generateToken(req) {
-  const handler = new userHandler(req);
+  const handler = req._userClass;
   // Makes an expiration date (in minutes).
   const expiration = expiresIn(15);
-  if(!handler.isSignedIn())
+  if(!handler.isLoggedIn)
     return {err: true, msg: 'Please log in first'};
-  let token = jwt.sign({iss: 'communicode-api', id: handler.getSessUser('_id'), exp: expiration}, require('./../config/auth.json').token);
+  let token = jwt.sign({iss: 'communicode-api', id: handler.user._id, exp: expiration}, require('./../config/auth.json').token);
   return {token: token};
 }
 

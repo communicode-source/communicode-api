@@ -33,8 +33,20 @@ const mongoose = require('mongoose');
 class User {
 
   constructor(req) {
-    this.isLoggedIn = (req) ? (req.isAuthenticated()) ? true : false : false;
-    this.user = (req) ? (req.user) ? req.user : false : false;
+    this.user                  = {};
+    this.attr                  = {};
+    this.user._id              = null;
+    this.user.email            = null;
+    this.user.Provider         = null;
+    this.user.providerID       = null;
+    this.user.accountType      = null;
+    this.attr.fName            = null;
+    this.attr.lName            = null;
+    this.attr.organizationName = null;
+    this.attr.url              = null;
+    this.attr.nonprofitType    = null;
+    this.attr.skills           = [];
+    this.attr.interests        = [];
   }
 
   returnAll(call) {
@@ -71,11 +83,12 @@ class User {
       callback("No logged in user", null);
     }
 
-    console.log(id);
-    userAttr.findOne({userId: id}, function(err, user) {
+    userAttr.find({userId: id}, function(err, user) {
 
-      console.log(user);
-
+      if(user.length != 1) {
+        console.log("error "+ id);
+        callback(true, null);
+      }
       if(err)
         callback(err, null);
 
@@ -301,7 +314,6 @@ class User {
         newUser.save(function(err){
           if(err)
             throw err;
-          return done(null, newUser);
         });
         let hID = newUser._id;
         let userA = new userAttr({

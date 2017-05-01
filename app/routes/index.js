@@ -9,12 +9,14 @@ const developers = require('./users/developers');
 const nonprofits = require('./users/nonprofits');
 const profile    = require('./profile');
 const JwtRoutes  = require('./token');
+const test  = require('./test');
 const userInt    = require('../handlers/User');
 const path       = require('path');
 const projects   = require('./projects');
 // Telling express what route goes to this greeting.
 routes.use('/api/greeting', greetings);
 routes.use('/api/secure/mail', mailDaemon);
+routes.use('/api/secure/check', test);
 routes.use('/api/users', UserRoutes);
 routes.use('/api/developers', developers);
 routes.use('/api/nonprofits', nonprofits);
@@ -30,9 +32,9 @@ routes.get('/api', (req, res) => {
 });
 
 routes.get('/findPath', (req, res) => {
-  const u = new userInt(req);
+  const u = req._userClass;
   u.getUserAttributes(['interests'], u.getSessUser('_id'),  function(err, interests) {
-    if(interests['interests'] && interests['interests'] !== null && interests['interests'].length > 0) {
+    if(interests !== null && interests['interests'] && interests['interests'] !== null && interests['interests'].length > 0) {
       res.redirect('/');
     } else {
       res.redirect('/register/step.2');
@@ -41,10 +43,9 @@ routes.get('/findPath', (req, res) => {
 });
 
 routes.get('/:user', (req, res) => {
-  var getData = new userInt(req);
+  var getData = req._userClass;
   getData.getUrl(req.params.user, function(err, users){
     if(err || users.length > 1) {
-      console.log(users);
       res.status(200).send(err+'Failed');
       return;
     }
@@ -62,7 +63,7 @@ routes.get('/:user', (req, res) => {
 });
 
 routes.get('/', (req, res) => {
-  if(new userInt(req).isSignedIn() === false){
+  if(req._userClass.isLoggedIn === false){
     res.render("public/index.twig", {
       "title": "Welcome to Communicode"
     })

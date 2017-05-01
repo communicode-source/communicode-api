@@ -27,12 +27,12 @@ users.route('/filter/:query')
       else
         res.status(200).json(set);
     };
-    new User().findUsers({email: req.params.query}, callback);
+    new UserHandler().findUsers({email: req.params.query}, callback);
   });
 
 users.route('/update')
   .get((req, res) => {
-    const uVal = new User(req);
+    const uVal = req._userClass;
     const callback =  function(err, set) {
       if(err) {
         res.status(200).json({err: true, msg: 'Something went wrong'});
@@ -48,10 +48,10 @@ users.route('/update')
       };
       res.status(200).json(userProfile);
     };
-    uVal.getProfile(uVal.getSessUser('_id'), callback);
+    uVal.getProfile(uVal.user._id, callback);
   })
   .post((req, res) => {
-    const uVal = new User(req);
+    const uVal = req._userClass;
     const callback = function(err, updateData) {
       if(err)
         res.status(200).json({err: true, msg: 'Something went wrong, try again later'});
@@ -64,13 +64,13 @@ users.route('/update')
       skills: 'array'
     };
     const userVa = {};
-    uVal.updateData(uVal.getSessUser('_id'), req, [userVa, attrV], callback);
+    uVal.updateData(uVal.user._id, req, [userVa, attrV], callback);
   });
 
 users.route('/me')
   .get((req, res) => {
-    var t = new UserHandler(req);
-    t.getProfile(t.getSessUser('_id'), function(err, set) {
+    var t = req._userClass;
+    t.getProfile(t.user._id, function(err, set) {
       if(err){
         res.status(200).json({err: true, msg: err});
         return;
@@ -82,8 +82,8 @@ users.route('/me')
   })
   users.route('/fake')
   .get((req, res) => {
-      var t = new UserHandler(req);
-      t.updateData(t.getSessUser('_id'), function(err, data){
+      var t = req._userClass;
+      t.updateData(t.user._id, function(err, data){
         if(err){
           console.log("error %s", err);
           res.send('There was an internal error, sorry');

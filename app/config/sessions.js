@@ -7,7 +7,7 @@ const redisConfig     = require('./auth.json').redisOptions;
 module.exports = function(app) {
   const client = redis.createClient(redisConfig.port, redisConfig.host);
   app.use(session({
-    secret: 'keybpard kitten',
+    secret: 'keyboard kitten',
     store: new redisStore({ host: redisConfig.host, port: redisConfig.port, client: client, ttl :  redisConfig.ttl}),
     saveUninitialized: true,
     resave: true

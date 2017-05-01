@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var sanitize  = require('./app/middleware/secureForm');
 var logger    = require('morgan');
 
+//const j       = require('./app/handlers/Verified_User');
+
+
 var twig = require("twig");
 // This section is optional and used to configure twig.
 app.set("twig options", {
@@ -16,6 +19,7 @@ var redis    = require('./app/config/sessions')(app);
 var passport = require('passport');
 
 const database = require('./app/config/database.js');
+mongoose.Promise = global.Promise;
 mongoose.connect(database.url);
 mongoose.connection.on('error', function() {
   console.info("Could not run mongodb, did you forget to run mongod?");
@@ -35,14 +39,14 @@ require('./app/config/sessions')(app);
 app.use(passport.initialize());
 app.use(passport.session());
 require('./app/config/passportConfig')(passport);
-
+app.use(require('./app/middleware/attachUser'));
 // PLEASE DON'T MOVE THIS =====================================================================================
 // Token authentication required for all /secure api endpoints.
 app.all('/api/secure/*', [require('./app/middleware/validateRequest')]);
 app.use('/web/*', [require('./app/middleware/userLogin').ensureNotLogged]);
 
 app.use('/', express.static(path.join(__dirname, 'views/public'), {
-  extensions: ['html']
+  extensions: ['twig', 'html']
 }));
 app.use('/Images', express.static(path.join(__dirname, 'public/Images'), {
   extensions: ['css']
